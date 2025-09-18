@@ -1,5 +1,5 @@
 export class Todo {
-    constructor(title, desc, checklist, dueDate, priority, isDone) {
+    constructor(title, desc, checklist, dueDate, priority, isDone, projectID) {
         this.title = title;
         this.desc = desc;
         this.checklist = checklist;
@@ -7,12 +7,18 @@ export class Todo {
         this.priority = priority;
         this.isDone = isDone;
         this.todoID = crypto.randomUUID();
-        //this.projectID = projectID;
+        this.projectID = projectID;
     }
 
-    //setDueDate(newDate) { this.dueDate = newDate; }
+    setTitle(newTitle) { this.title = newTitle; }
+    
+    setDesc(newDesc) { this.desc = newDesc; }
 
-    //setPriority(newPriority) { this.priority = newPriority; }
+    setDueDate(newDate) { this.dueDate = newDate; }
+
+    setPriority(newPriority) { this.priority = newPriority; }
+
+    setProjectID(newProjectID) { this.projectID = newProjectID; }
 
     toggleIsDone() {
         (!this.isDone) ? this.isDone = true : this.isDone = false;
@@ -33,11 +39,14 @@ export class Todo {
         console.log(`to-do: ${this.title}`);
         console.log(`priority: ${this.priority}`);
         console.log(`ID: ${this.todoID}`);
+        console.log(`Project ID: ${this.projectID}`);
         console.log(`desc: ${this.desc}`);
         console.log(`due: ${this.dueDate}`);
         console.log(`done?: ${this.isDone}`);
     }
     getChecklist() {
+        if (this.checklist.length === 0) { return console.log('no checklist'); }
+
         let status = '';
         let no = 0;
 

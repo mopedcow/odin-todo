@@ -18,14 +18,13 @@ const testList = [
         title: 'put away',
         isDone: false,
 }];
-const test = new Todo('laundry', 'do laundry', testList, 'today', '1', false);
 
-test.getChecklist();
+const testList2 = [];
 
-test.toggleChecklistItemStatus(1);
+const testProjID = crypto.randomUUID();
 
-test.getChecklist();
+const test = new Todo('laundry', 'do laundry', testList, 'today', '1', false, testProjID);
 
-test.toggleChecklistItemStatus(1);
+test.getInfo();
 
 test.getChecklist();

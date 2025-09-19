@@ -3,6 +3,7 @@ export class Project {
         this.title = title;
         this.priority = priority;
         this.ID = crypto.randomUUID();
+        this.todos = [];
     }
 
     setTitle(newTitle) {
@@ -12,22 +13,8 @@ export class Project {
     setPriority(newPriority) {
         this.priority = newPriority;
     }
-
-    getID() {
-        return this.ID;
+    
+    getTodosByPriority() {
+        return this.todos.toSorted( (a, b) => a.priority - b.priority );
     }
-}
-
-export function createProject(title, priority) {
-    let project = new Project(title, priority);
-    projects.push(project);
-}
-
-export function getSortedProjects() {
-    //sort by priority high-low
-    projects.sort( (a, b) => a.priority - b.priority );
-
-    projects.forEach(project => {
-    console.log(`${project.priority}: ${project.title} [ID: ${project.ID}]`);
-})
 }

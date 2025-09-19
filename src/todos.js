@@ -26,15 +26,14 @@ export class Todo {
 
     toggleChecklistItemStatus(itemNo) {
         if (itemNo >= this.checklist.length) {
-            return console.log('no item');
+            return console.log('error: no checklist item');
         }
-
-        console.log('toggled!');
         return (!this.checklist[itemNo].isDone) 
             ? this.checklist[itemNo].isDone = true 
             : this.checklist[itemNo].isDone = false ;
     }
 
+    // methods for testing in console:
     getInfo() {
         console.log(`to-do: ${this.title}`);
         console.log(`priority: ${this.priority}`);

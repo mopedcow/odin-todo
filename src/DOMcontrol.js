@@ -1,18 +1,22 @@
 import { Handler } from "./logicHandler.js";
 
 
-export function display() {
+export function displayController() {
     const handler = Handler();
     const mainDisplay = document.querySelector('#main-container');
 
-    function displayProjects() {
+    function generateProjects() {
         handler.projects.forEach( (project) => {
             let projectDiv = document.createElement('div');
             let projectTitle = document.createElement('h1');
             projectTitle.textContent = project.title;
+            projectDiv.classList.add('project-container');
             projectDiv.appendChild(projectTitle);
 
             project.todos.forEach( (todo) => {
+                let todoDiv = document.createElement('div');
+                todoDiv.classList.add('todo-container');
+
                 let todoTitle = document.createElement('h2');
                 todoTitle.textContent = todo.title;
 
@@ -22,28 +26,64 @@ export function display() {
                 //let todoChecklist = document.createElement('ol');
 
                 let todoDueDate = document.createElement('span');
-                todoDueDate.textContent = todo.dueDate;
+                todoDueDate.textContent = `Due: ${todo.dueDate}`;
 
                 //for todo.priority, change color of todo based on number
                 //ALSO display high, medium, or low.
                 let todoPriority = document.createElement('div');
-                todoPriority.textContent = `H/M/L`;
+                todoPriority.textContent = `Priority: H/M/L`;
                 
                 //for status, let user toggle
                 let todoStatus = document.createElement('button');
-                todoStatus.textContent = todo.isDone;
+                todoStatus.textContent = `Complete?: ${todo.isDone}`;
+                todoStatus.classList.add('toggle-status-btn');
+                todoStatus.id = todo.todoID;
 
 
 
-                projectDiv.appendChild(todoTitle);
-                projectDiv.appendChild(todoDesc);
-                projectDiv.appendChild(todoDueDate);
-                projectDiv.appendChild(todoPriority);
-                projectDiv.appendChild(todoStatus);
+                todoDiv.appendChild(todoTitle);
+                todoDiv.appendChild(todoDesc);
+                todoDiv.appendChild(todoDueDate);
+                todoDiv.appendChild(todoPriority);
+                todoDiv.appendChild(todoStatus);
+
+                projectDiv.appendChild(todoDiv);
             })
 
             mainDisplay.appendChild(projectDiv);
+            
         })
+
+        function wipeProjects() {
+            const projects = document.querySelectorAll('.project-container');
+            for (let i = projects.length-1; i >= 0; i--) {
+                projects[i].remove();
+            }
+        }
+
+        function resetProjects() {
+            wipeProjects();
+            generateProjects();
+        }
+
+
+        let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
+
+        toggleStatusBtns.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                let clickedID = e.target.id;
+                handler.projects.forEach( (project) => {
+                    project.todos.forEach( ( todo ) => {
+                        let matchID = todo.todoID;
+                        if (matchID === clickedID) {
+                            todo.toggleIsDone();
+                            resetProjects();
+                        }
+                    })
+                })
+            })
+        })
+
     }
 
 
@@ -101,6 +141,6 @@ handler.createTodoInProject('Laundry','Do a load of claundry', laundryList, 'Mon
 
 
 
-displayProjects();
+generateProjects();
 
 }

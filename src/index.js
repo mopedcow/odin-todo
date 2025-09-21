@@ -1,6 +1,6 @@
 import "./styles.css";
-import { display } from "./DOMcontrol.js";
+import { displayController } from "./DOMcontrol.js";
 
 //testing:
 
-display();
+displayController();

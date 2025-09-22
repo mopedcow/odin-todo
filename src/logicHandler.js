@@ -37,11 +37,18 @@ export function Handler() {
 
     function getProjectIndexByID(id) {
         return projects.findIndex(project => project.ID === id);
-    } 
+    }
+
+    function getTodoIndexByID(projectID, todoID) {
+        let pIndex = getProjectIndexByID(projectID);
+        return projects[pIndex].todos.findIndex(todo => todo.todoID === todoID);
+    }
 
     return {    createProject,
                 getSortedList,
                 createTodoInProject,
+                getProjectIndexByID,
+                getTodoIndexByID,
                 projects,
      }
 }

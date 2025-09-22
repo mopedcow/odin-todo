@@ -39,13 +39,25 @@ export function displayController() {
                 todoStatus.classList.add('toggle-status-btn');
                 todoStatus.id = todo.todoID;
 
+                //delete todo button
+                let delTodoBtn = document.createElement('button');
+                delTodoBtn.textContent = 'delete';
+                delTodoBtn.classList.add('todo-del-btn');
+                delTodoBtn.id = todo.todoID;
 
+                //edit todo button
+                let editTodoBtn = document.createElement('button');
+                editTodoBtn.textContent = 'edit';
+                editTodoBtn.classList.add('todo-edit-btn');
+                editTodoBtn.id = todo.todoID;
 
                 todoDiv.appendChild(todoTitle);
                 todoDiv.appendChild(todoDesc);
                 todoDiv.appendChild(todoDueDate);
                 todoDiv.appendChild(todoPriority);
                 todoDiv.appendChild(todoStatus);
+                todoDiv.appendChild(delTodoBtn);
+                todoDiv.appendChild(editTodoBtn);
 
                 projectDiv.appendChild(todoDiv);
             })
@@ -66,8 +78,36 @@ export function displayController() {
             generateProjects();
         }
 
+        function deleteTodo(todoID) {
 
+            handler.projects.forEach( (project) => {
+
+                    project.todos.forEach( (todo) => {
+
+                        let matchID = todo.todoID;
+                        if (matchID === todoID) { //if the current 'todo' ID in the loop matches the 'todo' clicked on
+
+                            let todoIndex = handler.getTodoIndexByID(todo.projectID, todoID);
+                            let projectIndex = handler.getProjectIndexByID(todo.projectID);
+
+                            handler.projects[projectIndex].todos.splice(todoIndex, 1);
+                            wipeProjects();
+                            resetProjects();
+
+                        }
+                    })
+                })
+        }
+
+        let deleteBtns = document.querySelectorAll('.todo-del-btn');
+        let editBtns = document.querySelectorAll('todo-edit-btns');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
+
+        deleteBtns.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                deleteTodo(e.target.id);
+            })
+        })
 
         toggleStatusBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {

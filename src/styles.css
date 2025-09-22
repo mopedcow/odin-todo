@@ -19,5 +19,11 @@ body {
     margin: 4px;
 }
 .toggle-status-btn {
+    background: cyan;
+}
+.todo-del-btn {
     background: salmon;
+}
+.todo-edit-btn {
+    background: mediumslateblue;
 }

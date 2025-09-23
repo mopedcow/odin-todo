@@ -4,35 +4,16 @@ import { Project } from "./projects.js";
 export function Handler() {
 
     let projects = [];
+    let todos = [];
 
     function createProject(title, priority) {
         let project = new Project(title, priority);
         projects.push(project);
     }
 
-    function getSortedProjects() {
-        return projects.toSorted( (a, b) => a.priority - b.priority );
-    }
-
-    function getSortedList() {
-        const sortedProjects = getSortedProjects();
-
-        sortedProjects.forEach( project => {
-            console.log(`${project.priority}: ${project.title} [ID: ${project.ID}]`);
-
-            const sortedTodos = project.getTodosByPriority();
-            sortedTodos.forEach( todo => {
-                console.log(`# ${todo.title}`);
-            })
-    })}
-
-    function createTodoInProject(title, desc, checklist, dueDate, priority, isDone, projectID) {
-
+    function createTodo(title, desc, checklist, dueDate, priority, isDone, projectID) {
         let todo = new Todo(title, desc, checklist, dueDate, priority, isDone, projectID);
-        
-        let projectIndex = getProjectIndexByID(projectID);
-
-        projects[projectIndex].todos.push(todo);
+        todos.push(todo);
     }
 
     function getProjectIndexByID(id) {
@@ -44,12 +25,35 @@ export function Handler() {
         return projects[pIndex].todos.findIndex(todo => todo.todoID === todoID);
     }
 
+    function sortArrayByPriority(array) {
+        return array.toSorted( (a, b) => (a.priority - b.priority));
+    }
+
+    function getSortedList() { // for testing in console
+        let sortedProjects = sortArrayByPriority(projects);
+        let sortedTodos = sortArrayByPriority(todos);
+        sortedProjects.forEach( (project) => {
+            console.log(`${project.title.toUpperCase()} (priority ${project.priority})`);
+            sortedTodos.forEach( (todo) => {
+                if (todo.projectID === project.ID) {
+                    console.log(` - ${todo.title} (${todo.priority})`);
+                }
+            })
+        })
+    }
+
+
+
+
+
     return {    createProject,
                 getSortedList,
-                createTodoInProject,
+                createTodo,
                 getProjectIndexByID,
                 getTodoIndexByID,
+                sortArrayByPriority,
                 projects,
+                todos,
      }
 }
 

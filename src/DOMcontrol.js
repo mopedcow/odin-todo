@@ -99,6 +99,10 @@ export function displayController() {
                 })
         }
 
+        function editTodo(todoID) {
+            
+        }
+
         let deleteBtns = document.querySelectorAll('.todo-del-btn');
         let editBtns = document.querySelectorAll('todo-edit-btns');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');

@@ -33,6 +33,12 @@ export class Todo {
             : this.checklist[itemNo].isDone = false ;
     }
 
+    getPriorityByName() {
+        return (this.priority === 0) ? 'High'
+            : (this.priority === 1 ) ? 'Medium'
+            : 'Low';
+    }
+
     // methods for testing in console:
     getInfo() {
         console.log(`to-do: ${this.title}`);

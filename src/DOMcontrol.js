@@ -36,7 +36,9 @@ export function displayController() {
                 //for todo.priority, change color of todo based on number
                 //ALSO display high, medium, or low.
                 let todoPriority = document.createElement('div');
-                todoPriority.textContent = `priority: ${todo.priority}`;
+                let pName = todo.getPriorityByName();
+                console.log('in generate proj: todo priority ' + todo.priority);
+                todoPriority.textContent = todo.getPriorityByName();
                 
                 //for status, let user toggle
                 let todoStatus = document.createElement('button');
@@ -65,11 +67,9 @@ export function displayController() {
                 todoDiv.appendChild(editTodoBtn);
 
                 projectDiv.appendChild(todoDiv);
-
-            mainDisplay.appendChild(projectDiv);
             })
+            mainDisplay.appendChild(projectDiv);
         })
-    
 
         function wipeProjects() {
             const projects = document.querySelectorAll('.project-container');
@@ -88,7 +88,7 @@ export function displayController() {
             handler.todos.splice(todoIndex, 1);
             resetProjects();
         }
-        
+
         function toggleStatus(targetID) {
             handler.todos.forEach( (todo) => {
                 if (todo.todoID === targetID) {
@@ -101,6 +101,8 @@ export function displayController() {
         function editTodo(todoID) {
             
         }
+
+
 
         let deleteBtns = document.querySelectorAll('.todo-del-btn');
         let editBtns = document.querySelectorAll('todo-edit-btns');
@@ -126,13 +128,13 @@ export function displayController() {
     handler.createProject('House', '1');
     handler.createProject('Baby', '0');
 
-    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], 'today', '1', false, handler.projects[1].ID);
-    handler.createTodo('Feed','Feed Adaidh', [], 'today', '0', true, handler.projects[1].ID);
-    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], 'today', '1', false, handler.projects[1].ID);
+    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], 'today', 1, false, handler.projects[1].ID);
+    handler.createTodo('Feed','Feed Adaidh', [], 'today', 0, true, handler.projects[1].ID);
+    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], 'today', 1, false, handler.projects[1].ID);
 
-    handler.createTodo('Wash dishes','Wash dishes', [], 'today', '2', true, handler.projects[0].ID);
-    handler.createTodo('Make dinner','Make dinner', [], 'tonight', '0', false, handler.projects[0].ID);
-    handler.createTodo('Order groceries','Place order for groceries from Waitrose', ['bread','cheese','milk'], 'weekend', '0', false, handler.projects[0].ID);
+    handler.createTodo('Wash dishes','Wash dishes', [], 'today', 2, true, handler.projects[0].ID);
+    handler.createTodo('Make dinner','Make dinner', [], 'tonight', 1, false, handler.projects[0].ID);
+    handler.createTodo('Order groceries','Place order for groceries from Waitrose', ['bread','cheese','milk'], 'weekend', 0, false, handler.projects[0].ID);
 
 
 

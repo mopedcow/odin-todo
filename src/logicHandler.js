@@ -20,13 +20,16 @@ export function Handler() {
         return projects.findIndex(project => project.ID === id);
     }
 
-    function getTodoIndexByID(projectID, todoID) {
-        let pIndex = getProjectIndexByID(projectID);
-        return projects[pIndex].todos.findIndex(todo => todo.todoID === todoID);
+    function getTodoIndexByID(todoID) {
+        return todos.findIndex(todo => todo.todoID === todoID);
     }
 
     function sortArrayByPriority(array) {
         return array.toSorted( (a, b) => (a.priority - b.priority));
+    }
+
+    function filterTodosByProjectID(todoArray, projectID) {
+        return todoArray.filter( (todo) => todo.projectID === projectID);
     }
 
     function getSortedList() { // for testing in console
@@ -43,9 +46,6 @@ export function Handler() {
     }
 
 
-
-
-
     return {    createProject,
                 getSortedList,
                 createTodo,
@@ -54,6 +54,7 @@ export function Handler() {
                 sortArrayByPriority,
                 projects,
                 todos,
+                filterTodosByProjectID,
      }
 }
 

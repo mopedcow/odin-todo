@@ -6,14 +6,19 @@ export function displayController() {
     const mainDisplay = document.querySelector('#main-container');
 
     function generateProjects() {
-        handler.projects.forEach( (project) => {
+        let sortedProjects = handler.sortArrayByPriority(handler.projects);
+        let sortedTodos = handler.sortArrayByPriority(handler.todos);
+
+        sortedProjects.forEach( (project) => {
             let projectDiv = document.createElement('div');
             let projectTitle = document.createElement('h1');
             projectTitle.textContent = project.title;
             projectDiv.classList.add('project-container');
             projectDiv.appendChild(projectTitle);
 
-            project.todos.forEach( (todo) => {
+            let projectTodos = handler.filterTodosByProjectID(sortedTodos, project.ID);
+
+            projectTodos.forEach( (todo) => {
                 let todoDiv = document.createElement('div');
                 todoDiv.classList.add('todo-container');
 
@@ -31,7 +36,7 @@ export function displayController() {
                 //for todo.priority, change color of todo based on number
                 //ALSO display high, medium, or low.
                 let todoPriority = document.createElement('div');
-                todoPriority.textContent = `Priority: H/M/L`;
+                todoPriority.textContent = `priority: ${todo.priority}`;
                 
                 //for status, let user toggle
                 let todoStatus = document.createElement('button');
@@ -60,11 +65,11 @@ export function displayController() {
                 todoDiv.appendChild(editTodoBtn);
 
                 projectDiv.appendChild(todoDiv);
-            })
 
             mainDisplay.appendChild(projectDiv);
-            
+            })
         })
+    
 
         function wipeProjects() {
             const projects = document.querySelectorAll('.project-container');
@@ -78,25 +83,19 @@ export function displayController() {
             generateProjects();
         }
 
-        function deleteTodo(todoID) {
-
-            handler.projects.forEach( (project) => {
-
-                    project.todos.forEach( (todo) => {
-
-                        let matchID = todo.todoID;
-                        if (matchID === todoID) { //if the current 'todo' ID in the loop matches the 'todo' clicked on
-
-                            let todoIndex = handler.getTodoIndexByID(todo.projectID, todoID);
-                            let projectIndex = handler.getProjectIndexByID(todo.projectID);
-
-                            handler.projects[projectIndex].todos.splice(todoIndex, 1);
-                            wipeProjects();
-                            resetProjects();
-
-                        }
-                    })
-                })
+        function deleteTodo(targetID) {
+            let todoIndex = handler.getTodoIndexByID(targetID);
+            handler.todos.splice(todoIndex, 1);
+            resetProjects();
+        }
+        
+        function toggleStatus(targetID) {
+            handler.todos.forEach( (todo) => {
+                if (todo.todoID === targetID) {
+                    todo.toggleIsDone();
+                    resetProjects();
+                }
+            })
         }
 
         function editTodo(todoID) {
@@ -109,82 +108,35 @@ export function displayController() {
 
         deleteBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
-                deleteTodo(e.target.id);
+                deleteTodo(e.target.id); 
             })
         })
 
         toggleStatusBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
-                let clickedID = e.target.id;
-                handler.projects.forEach( (project) => {
-                    project.todos.forEach( ( todo ) => {
-                        let matchID = todo.todoID;
-                        if (matchID === clickedID) {
-                            todo.toggleIsDone();
-                            resetProjects();
-                        }
-                    })
-                })
+                toggleStatus(e.target.id);
             })
         })
-
     }
 
 
+        //testing:
+
+
+    handler.createProject('House', '1');
+    handler.createProject('Baby', '0');
+
+    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], 'today', '1', false, handler.projects[1].ID);
+    handler.createTodo('Feed','Feed Adaidh', [], 'today', '0', true, handler.projects[1].ID);
+    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], 'today', '1', false, handler.projects[1].ID);
+
+    handler.createTodo('Wash dishes','Wash dishes', [], 'today', '2', true, handler.projects[0].ID);
+    handler.createTodo('Make dinner','Make dinner', [], 'tonight', '0', false, handler.projects[0].ID);
+    handler.createTodo('Order groceries','Place order for groceries from Waitrose', ['bread','cheese','milk'], 'weekend', '0', false, handler.projects[0].ID);
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-//placeholder projects & todos:
-    const laundryList = [
-        {   title: 'put laundry in washer',
-            isDone: false,
-        },
-        {
-            title: 'take laundry out of washer',
-            isDone: false,
-        },
-        {
-            title: 'put in dryer',
-            isDone: false,
-        },
-        {
-            title: 'fold',
-            isDone: false,
-        },
-        {
-            title: 'put away',
-            isDone: false,
-}];
-handler.createProject('Baby', '0');
-handler.createTodoInProject('Bath','Give Adaidh a bath', [], 'evening', 0, true, handler.projects[0].ID);
-handler.createTodoInProject('Feed','Feed Adaidh', [], 'afternoon', 0, false, handler.projects[0].ID);
-
-handler.createProject('TOP', '1');
-handler.createTodoInProject('Complete app logic', 'Write app internal logic, not including DOM', [], 'evening', 1, true, handler.projects[1].ID);
-handler.createTodoInProject('Complete DOM logic', 'Write DOM logic (displaying and sorting todos)', [], 'Sunday', 1, false, handler.projects[1].ID);
-
-handler.createProject('House', '2');
-handler.createTodoInProject('Laundry','Do a load of claundry', laundryList, 'Monday', 0, false, handler.projects[2].ID);
-
-
-//testing in console:
-//handler.getSortedList();
-//handler.projects[2].todos[0].getChecklist();
-
-
-
-generateProjects();
+    generateProjects();
 
 }

@@ -6,10 +6,63 @@
     <title>To-do List</title>
 </head>
 <body>
-
     <div id="main-container">
-        
+        <header>
+            <div id="buttons-container">
+                <button type="button" id="add-todo-btn">Add New Todo</button>
+                <button type="button" id="add-project-btn">Add New Project</button>
+                <p>Hello</p>
+            </div>
+        </header>
+
+        <div id="content"> 
+            
+        </div>
     </div>
     
+    
+    <dialog closedby="any" id="add-todo-dialog">
+        <div id="add-todo-container">
+            <div id="add-title">
+                <label for="todo-title">Title:</label>
+                <input type="text" name="title" id="todo-title">
+            </div>
+            <div id="add-desc">
+                <label for="desc">Description:</label>
+                <input type="text" id="desc" name="description">
+            </div>
+            <div id="add-checklist">
+                <label for="">Checklist: </label>
+                <button type="button" id="add-checklist-btn">Add a checklist</button>
+            </div>
+            <div id="add-due-date">
+                <label for="due-date">Due: </label>
+                <input type="text" name="due-date" id="due-date">
+            </div>
+            <div id="add-priority">
+                <p>Priority: </p>
+                <input type="radio" name="todo-priority" id="0" value="0">
+                <label for="0">High</label>
+                <input type="radio" name="todo-priority" id="1" value="1">
+                <label for="1">Medium</label>
+                <input type="radio" name="todo-priority" id="2" value="2">
+                <label for="2">Low</label>
+            </div>
+            <div id="add-project">
+                <label for="project">In Project:</label>
+                <select name="project" id="project">
+                </select>
+            </div>
+            <div id="submit-todo">
+                <button type="submit" id="submit-todo-button" formmethod="dialog">Submit</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog closedby="any" id="add-project-dialog">
+        <div id="add-project-container">
+            <p>i'm the projects dialog!</p>
+        </div>
+    </dialog>
 </body>
 </html>

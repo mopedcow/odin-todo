@@ -3,7 +3,7 @@ import { Handler } from "./logicHandler.js";
 
 export function displayController() {
     const handler = Handler();
-    const mainDisplay = document.querySelector('#main-container');
+    const mainDisplay = document.querySelector('#content');
 
     function generateProjects() {
         let sortedProjects = handler.sortArrayByPriority(handler.projects);
@@ -37,7 +37,6 @@ export function displayController() {
                 //ALSO display high, medium, or low.
                 let todoPriority = document.createElement('div');
                 let pName = todo.getPriorityByName();
-                console.log('in generate proj: todo priority ' + todo.priority);
                 todoPriority.textContent = todo.getPriorityByName();
                 
                 //for status, let user toggle
@@ -103,11 +102,21 @@ export function displayController() {
         }
 
 
+        const addTodoBtn = document.querySelector('#add-todo-btn');
+        const addTodoDialog = document.querySelector('#add-todo-dialog');
+        const addProjectBtn = document.querySelector('#add-project-btn');
+        const addProjectDialog = document.querySelector('#add-project-dialog');
 
         let deleteBtns = document.querySelectorAll('.todo-del-btn');
         let editBtns = document.querySelectorAll('todo-edit-btns');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
 
+        addTodoBtn.addEventListener('click', () => {
+            addTodoDialog.showModal();
+        })
+        addProjectBtn.addEventListener('click', () => {
+            addProjectDialog.showModal();
+        })
         deleteBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
                 deleteTodo(e.target.id); 

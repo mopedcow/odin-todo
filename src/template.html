@@ -8,10 +8,10 @@
 <body>
     <div id="main-container">
         <header>
+            <h1>--To-Dos?!--</h1>
             <div id="buttons-container">
                 <button type="button" id="add-todo-btn">Add New Todo</button>
                 <button type="button" id="add-project-btn">Add New Project</button>
-                <p>Hello</p>
             </div>
         </header>
 
@@ -23,69 +23,79 @@
     
     <dialog closedby="any" id="add-todo-dialog">
         <div id="add-todo-container">
-            <div id="add-title">
-                <label for="todo-title">Title:</label>
-                <input type="text" name="title" id="todo-title">
-            </div>
-            <div id="add-desc-button">
-                <button type="button" id="add-desc-button">Add Description...</button>
-            </div>
-            <div id="add-desc">
-                <label for="desc">Description:</label>
-                <textarea rows="2" id="desc" name="description"></textarea>
-            </div>
-            <!-- 
-            <div id="add-checklist">
-                <label for="">Checklist: </label>
-                <button type="button" id="add-checklist-btn">Add a checklist</button>
-            </div>
-        -->
-            <div id="add-due-date">
-                <label for="due-date">Due: </label>
-                <input type="text" name="due-date" id="due-date">
-            </div>
-            <div id="add-priority">
-                <p>Priority: </p>
-                <label for="todo-0">High</label>
-                <input type="radio" name="todo-priority" id="todo-0" value="0" checked>
-                
-                <label for="todo-1">Medium</label>
-                <input type="radio" name="todo-priority" id="todo-1" value="1">
-                
-                <label for="todo-2">Low</label>
-                <input type="radio" name="todo-priority" id="todo-2" value="2">
-            </div>
-            <div id="add-project">
-                <label for="select-todo-project">In Project:</label>
-                <select name="todo-project" id="select-todo-project">
-                </select>
-            </div>
-            <div id="submit-todo">
-                <button type="submit" id="submit-todo-button" formmethod="dialog">Submit</button>
-            </div>
+            <form id="add-todo-form">
+                <div id="add-title">
+                    <label for="todo-title">Title:</label>
+                    <input type="text" name="title" id="todo-title">
+                </div>
+                <div id="add-desc-button">
+                    <button type="button" id="add-desc-button">Add Description...</button>
+                </div>
+                <div id="add-desc" class="hidden">
+                    <label for="desc">Description:</label>
+                    <textarea rows="2" id="desc" name="description"></textarea>
+                </div>
+                <div id="add-checklist-button">
+                    <button type="button" id="add-checklist-btn">Add a checklist...</button>
+                </div>
+                <div id="add-checklist" class="hidden">
+                    <label for="todo-checklist">Checklist: </label>
+                    1. <input type="text" name="checklist-array" id="todo-checklist">
+                    2. <input type="text" name="checklist-array" id="todo-checklist">
+                    3. <input type="text" name="checklist-array" id="todo-checklist">
+                </div>
+                <div id="add-due-date-button">
+                    <button type="button" id="add-due-date-button">Add due date...</button>
+                </div>
+                <div id="add-due-date" class="hidden">
+                    <label for="due-date">Due: </label>
+                    <input type="text" name="due-date" id="due-date">
+                </div>
+                <div id="add-priority">
+                    <p>Priority: </p>
+                    <label for="todo-0">High</label>
+                    <input type="radio" name="todo-priority" id="todo-0" value="0" checked>
+                    
+                    <label for="todo-1">Medium</label>
+                    <input type="radio" name="todo-priority" id="todo-1" value="1">
+                    
+                    <label for="todo-2">Low</label>
+                    <input type="radio" name="todo-priority" id="todo-2" value="2">
+                </div>
+                <div id="add-project">
+                    <label for="select-todo-project">In Project:</label>
+                    <select name="todo-project" id="select-todo-project">
+                    </select>
+                </div>
+                <div id="submit-todo">
+                    <button type="submit" id="submit-todo-button" formmethod="dialog">Submit</button>
+                </div>
+            </form>
         </div>
     </dialog>
 
     <dialog closedby="any" id="add-project-dialog">
         <div id="add-project-container">
-            <div id="add-title">
-                <label for="project-title">Title:</label>
-                <input type="text" name="title" id="project-title">
-            </div>
-            <div id="add-priority">
-                <p>Priority: </p>
-                <label for="todo-0">High</label>
-                <input type="radio" name="project-priority" id="project-0" value="0" checked>
-                
-                <label for="todo-1">Medium</label>
-                <input type="radio" name="project-priority" id="project-1" value="1">
-                
-                <label for="todo-2">Low</label>
-                <input type="radio" name="project-priority" id="project-2" value="2">
-            </div>
-            <div id="submit-project">
-                <button type="submit" id="submit-project-button" formmethod="dialog">Submit</button>
-            </div>
+            <form id="add-project-form">
+                <div id="add-title">
+                    <label for="project-title">Title:</label>
+                    <input type="text" name="title" id="project-title">
+                </div>
+                <div id="add-priority">
+                    <p>Priority: </p>
+                    <label for="todo-0">High</label>
+                    <input type="radio" name="project-priority" id="project-0" value="0" checked>
+                    
+                    <label for="todo-1">Medium</label>
+                    <input type="radio" name="project-priority" id="project-1" value="1">
+                    
+                    <label for="todo-2">Low</label>
+                    <input type="radio" name="project-priority" id="project-2" value="2">
+                </div>
+                <div id="submit-project">
+                    <button type="submit" id="submit-project-button" formmethod="dialog">Submit</button>
+                </div>
+            </form>
         </div>
     </dialog>
 </body>

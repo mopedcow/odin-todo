@@ -27,3 +27,6 @@ body {
 .todo-edit-btn {
     background: mediumslateblue;
 }
+.hidden {
+    display: none;
+}

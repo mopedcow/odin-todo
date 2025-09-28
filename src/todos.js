@@ -34,8 +34,8 @@ export class Todo {
     }
 
     getPriorityByName() {
-        return (this.priority === 0) ? 'High'
-            : (this.priority === 1 ) ? 'Medium'
+        return (Number(this.priority) === 0) ? 'High'
+            : (Number(this.priority) === 1 ) ? 'Medium'
             : 'Low';
     }
 

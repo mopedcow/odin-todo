@@ -41,11 +41,20 @@ export function displayController() {
                 todoTitle.textContent = todo.title;
 
                 //check if description present
-                //  if none, don't generate anything
+                //  if none, hide this div
                 let todoDesc = document.createElement('p');
                 todoDesc.textContent = `Description: ${todo.desc}`;
 
-                //let todoChecklist = document.createElement('ol');
+                let todoChecklist = document.createElement('div');
+                todoChecklist.innerHTML = 
+                    `<p>Checklist:</p>`;
+                let todoChecklistOL = document.createElement('ol');
+                todo.checklist.forEach((item) => {
+                    let li = document.createElement('li');
+                    li.textContent = item.value;
+                    todoChecklistOL.appendChild(li);
+                })
+                todoChecklist.appendChild(todoChecklistOL);
 
                 let todoDueDate = document.createElement('span');
                 todoDueDate.textContent = `Due: ${todo.dueDate}`;
@@ -75,6 +84,7 @@ export function displayController() {
 
                 todoDiv.appendChild(todoTitle);
                 todoDiv.appendChild(todoDesc);
+                todoDiv.appendChild(todoChecklist);
                 todoDiv.appendChild(todoDueDate);
                 todoDiv.appendChild(todoPriority);
                 todoDiv.appendChild(todoStatus);
@@ -109,9 +119,19 @@ export function displayController() {
         })
     }
 
+    const addTodoForm = document.querySelector('#add-todo-form');
     const addTodoDialog = document.querySelector('#add-todo-dialog');
     const addTodoBtn = document.querySelector('#add-todo-btn');
     const submitTodoBtn = document.querySelector('#submit-todo-button');
+
+    const addDescBtn = document.querySelector('#add-desc-button');
+    const addDesc = document.querySelector('#add-desc');
+
+    const addDueDateBtn = document.querySelector('#add-due-date-button');
+    const addDueDate = document.querySelector('#add-due-date');
+
+    const addChecklistBtn = document.querySelector('#add-checklist-button');
+    const addChecklist = document.querySelector('#add-checklist');
 
     addTodoBtn.addEventListener('click', () => {
         //generate projects as options in dropdown
@@ -127,26 +147,63 @@ export function displayController() {
         addTodoDialog.showModal();
     })
 
+    addDescBtn.addEventListener('click', () => {
+        addDescBtn.classList.add('hidden');
+        addDesc.classList.remove('hidden');
+    })
+    addDueDateBtn.addEventListener('click', () => {
+        addDueDateBtn.classList.add('hidden');
+        addDueDate.classList.remove('hidden');
+    })
+    addChecklistBtn.addEventListener('click', () => {
+        addChecklistBtn.classList.add('hidden');
+        addChecklist.classList.remove('hidden');      
+    })
     submitTodoBtn.addEventListener('click', () => {
         addTodo();
         resetProjects();
         addTodoDialog.close();
     })
+    addTodoDialog.addEventListener('close', () => {
+        addTodoForm.reset();
+        if (addDueDateBtn.classList.contains('hidden')) {
+            addDueDateBtn.classList.remove('hidden');
+            addDueDate.classList.add('hidden');
+        }
+        if (addDescBtn.classList.contains('hidden')) {
+            addDescBtn.classList.remove('hidden');
+            addDesc.classList.add('hidden');
+        }
+        if (addChecklistBtn.classList.contains('hidden')) {
+            addChecklistBtn.classList.remove('hidden');
+            addChecklist.classList.add('hidden');
+        }
+    })
 
     function addTodo() {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
+        const checklist = 
+            (addChecklistBtn.classList.contains('hidden')) 
+            ? document.getElementsByName('checklist-array') 
+            : [];
         const dueDate = document.getElementById('due-date').value;
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const isDone = false;
         const projectID = document.getElementById('select-todo-project').value;
 
-        handler.createTodo(title, desc, [], dueDate, priority, isDone, projectID);
+        for (let i = 0; i < checklist.length; i++) {
+            console.log('checklist array?: ' + checklist[i].value);
+        }
+        
+        handler.createTodo(title, desc, checklist, dueDate, priority, isDone, projectID);
     }
 
     const addProjectDialog = document.querySelector('#add-project-dialog');
     const addProjectBtn = document.querySelector('#add-project-btn');
     const submitProjectBtn = document.querySelector('#submit-project-button');
+
+    const addProjectForm = document.querySelector('#add-project-form');
 
     addProjectBtn.addEventListener('click', () => {
         addProjectDialog.showModal();
@@ -157,6 +214,10 @@ export function displayController() {
         addProject();
         resetProjects();
         addProjectDialog.close();
+    })
+
+    addProjectDialog.addEventListener('close', () => {
+        addProjectForm.reset();
     })
 
     function addProject() {
@@ -201,9 +262,10 @@ export function displayController() {
 
     handler.createTodo('Wash dishes','Wash dishes', [], 'today', 2, true, handler.projects[0].ID);
     handler.createTodo('Make dinner','Make dinner', [], 'tonight', 1, false, handler.projects[0].ID);
-    handler.createTodo('Order groceries','Place order for groceries from Waitrose', ['bread','cheese','milk'], 'weekend', 0, false, handler.projects[0].ID);
+    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread'},{value:'cheese'},{value:'milk'}], 'weekend', 0, false, handler.projects[0].ID);
 
-
+//['bread','cheese','milk']
+//[{value:'bread'},{value:'cheese'},{value:'milk'}]
 
 
 

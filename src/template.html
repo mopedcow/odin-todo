@@ -31,26 +31,31 @@
                 <label for="desc">Description:</label>
                 <input type="text" id="desc" name="description">
             </div>
+            <!-- 
             <div id="add-checklist">
                 <label for="">Checklist: </label>
                 <button type="button" id="add-checklist-btn">Add a checklist</button>
             </div>
+        -->
             <div id="add-due-date">
                 <label for="due-date">Due: </label>
                 <input type="text" name="due-date" id="due-date">
             </div>
             <div id="add-priority">
                 <p>Priority: </p>
-                <input type="radio" name="todo-priority" id="0" value="0">
-                <label for="0">High</label>
-                <input type="radio" name="todo-priority" id="1" value="1">
-                <label for="1">Medium</label>
-                <input type="radio" name="todo-priority" id="2" value="2">
-                <label for="2">Low</label>
+                <label for="todo-0">High</label>
+                <input type="radio" name="todo-priority" id="todo-0" value="0" checked>
+                
+                <label for="todo-1">Medium</label>
+                <input type="radio" name="todo-priority" id="todo-1" value="1">
+                
+                <label for="todo-2">Low</label>
+                <input type="radio" name="todo-priority" id="todo-2" value="2">
+                
             </div>
             <div id="add-project">
-                <label for="project">In Project:</label>
-                <select name="project" id="project">
+                <label for="select-todo-project">In Project:</label>
+                <select name="todo-project" id="select-todo-project">
                 </select>
             </div>
             <div id="submit-todo">
@@ -61,7 +66,22 @@
 
     <dialog closedby="any" id="add-project-dialog">
         <div id="add-project-container">
-            <p>i'm the projects dialog!</p>
+            <div id="add-title">
+                <label for="project-title">Title:</label>
+                <input type="text" name="title" id="project-title">
+            </div>
+            <div id="add-priority">
+                <p>Priority: </p>
+                <input type="radio" name="project-priority" id="proj-0" value="0">
+                <label for="proj-0">High</label>
+                <input type="radio" name="project-priority" id="proj-1" value="1">
+                <label for="proj-1">Medium</label>
+                <input type="radio" name="project-priority" id="proj-2" value="2">
+                <label for="proj-2">Low</label>
+            </div>
+            <div id="submit-project">
+                <button type="submit" id="submit-project-button" formmethod="dialog">Submit</button>
+            </div>
         </div>
     </dialog>
 </body>

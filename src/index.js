@@ -3,5 +3,6 @@ import { displayController } from "./DOMcontrol.js";
 
 
 
-displayController();
+
+displayController().generateProjects();
 

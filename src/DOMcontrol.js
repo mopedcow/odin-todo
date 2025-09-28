@@ -2,10 +2,13 @@ import { Handler } from "./logicHandler.js";
 
 
 export function displayController() {
+    console.log('top of domcontroller!!!');
+
     const handler = Handler();
     const mainDisplay = document.querySelector('#content');
 
     function generateProjects() {
+        console.log('top of generate projects!!!!!');
         let sortedProjects = handler.sortArrayByPriority(handler.projects);
         let sortedTodos = handler.sortArrayByPriority(handler.todos);
 
@@ -36,7 +39,6 @@ export function displayController() {
                 //for todo.priority, change color of todo based on number
                 //ALSO display high, medium, or low.
                 let todoPriority = document.createElement('div');
-                let pName = todo.getPriorityByName();
                 todoPriority.textContent = todo.getPriorityByName();
                 
                 //for status, let user toggle
@@ -70,53 +72,10 @@ export function displayController() {
             mainDisplay.appendChild(projectDiv);
         })
 
-        function wipeProjects() {
-            const projects = document.querySelectorAll('.project-container');
-            for (let i = projects.length-1; i >= 0; i--) {
-                projects[i].remove();
-            }
-        }
-
-        function resetProjects() {
-            wipeProjects();
-            generateProjects();
-        }
-
-        function deleteTodo(targetID) {
-            let todoIndex = handler.getTodoIndexByID(targetID);
-            handler.todos.splice(todoIndex, 1);
-            resetProjects();
-        }
-
-        function toggleStatus(targetID) {
-            handler.todos.forEach( (todo) => {
-                if (todo.todoID === targetID) {
-                    todo.toggleIsDone();
-                    resetProjects();
-                }
-            })
-        }
-
-        function editTodo(todoID) {
-            
-        }
-
-
-        const addTodoBtn = document.querySelector('#add-todo-btn');
-        const addTodoDialog = document.querySelector('#add-todo-dialog');
-        const addProjectBtn = document.querySelector('#add-project-btn');
-        const addProjectDialog = document.querySelector('#add-project-dialog');
-
         let deleteBtns = document.querySelectorAll('.todo-del-btn');
-        let editBtns = document.querySelectorAll('todo-edit-btns');
+        let editBtns = document.querySelectorAll('.todo-edit-btn');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
 
-        addTodoBtn.addEventListener('click', () => {
-            addTodoDialog.showModal();
-        })
-        addProjectBtn.addEventListener('click', () => {
-            addProjectDialog.showModal();
-        })
         deleteBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
                 deleteTodo(e.target.id); 
@@ -128,7 +87,106 @@ export function displayController() {
                 toggleStatus(e.target.id);
             })
         })
+
+        editBtns.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                console.log('edit btn clicked: ' + e.target.id);
+            })
+        })
     }
+
+    const addTodoDialog = document.querySelector('#add-todo-dialog');
+    const addProjectDialog = document.querySelector('#add-project-dialog');
+
+    const addTodoBtn = document.querySelector('#add-todo-btn');
+    const addProjectBtn = document.querySelector('#add-project-btn');
+
+    const submitTodoBtn = document.querySelector('#submit-todo-button');
+    const submitProjectBtn = document.querySelector('#submit-project-button');
+
+    addTodoBtn.addEventListener('click', () => {
+        let projectDropdown = document.querySelector('#select-todo-project');
+        handler.projects.forEach( (project) => {
+            let option = document.createElement('option');
+            option.text = project.title;
+            option.value = project.ID;
+            projectDropdown.add(option);
+        })
+        
+        addTodoDialog.showModal();
+    })
+
+    submitTodoBtn.addEventListener('click', () => {
+        const title = document.getElementById('todo-title').value;
+        const desc = document.getElementById('desc').value;
+        const dueDate = document.getElementById('due-date').value;
+        const priority = document.querySelector('input[name="todo-priority"]:checked').value;
+        const isDone = false;
+        const projectID = document.getElementById('select-todo-project').value;
+
+        handler.createTodo(title, desc, [], dueDate, priority, isDone, projectID);
+
+        resetProjects();
+        addTodoDialog.close();
+    })
+
+    addProjectBtn.addEventListener('click', () => {
+        addProjectDialog.showModal();
+        let projectScreen = document.querySelector('#add-project-container');
+        let testDiv = document.createElement('div');
+        testDiv.textContent = 'HELLO!';
+        projectScreen.appendChild(testDiv);
+    })
+
+    submitProjectBtn.addEventListener('click', (e) => {
+        //e.preventDefault();
+        const title = document.getElementById('project-title').value;
+        const priority = document.querySelector('input[name="project-priority"]:checked').value;
+
+        handler.createProject(title, priority);
+        resetProjects();
+
+        addProjectDialog.close();
+    })
+
+    function wipeProjects() {
+        const projects = document.querySelectorAll('.project-container');
+        for (let i = projects.length-1; i >= 0; i--) {
+            projects[i].remove();
+        }
+    }
+
+    function resetProjects() {
+        wipeProjects();
+        generateProjects();
+    }
+
+    function addTodo() {
+
+    }
+
+    function editTodo(todoID) {
+        
+    }
+
+    function deleteTodo(targetID) {
+        let todoIndex = handler.getTodoIndexByID(targetID);
+        handler.todos.splice(todoIndex, 1);
+        resetProjects();
+        console.log(handler.todos);
+    }
+
+    function toggleStatus(targetID) {
+        handler.todos.forEach( (todo) => {
+            if (todo.todoID === targetID) {
+                todo.toggleIsDone();
+                resetProjects();
+            }
+        })
+    }
+
+
+
 
 
         //testing:
@@ -148,6 +206,8 @@ export function displayController() {
 
 
 
-    generateProjects();
 
+    return {
+        generateProjects,
+    }
 }

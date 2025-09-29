@@ -44,6 +44,9 @@ export function displayController() {
                 //  if none, hide this div
                 let todoDesc = document.createElement('p');
                 todoDesc.textContent = `Description: ${todo.desc}`;
+                if (todo.desc === '') {
+                    todoDesc.classList.add('hidden');
+                }
 
                 let todoChecklist = document.createElement('div');
                 todoChecklist.innerHTML = 

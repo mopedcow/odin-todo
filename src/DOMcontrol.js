@@ -55,6 +55,9 @@ export function displayController() {
                     todoChecklistOL.appendChild(li);
                 })
                 todoChecklist.appendChild(todoChecklistOL);
+                if (todo.checklist.length === 0) {
+                    todoChecklist.classList.add('hidden');
+                }
 
                 let todoDueDate = document.createElement('span');
                 todoDueDate.textContent = `Due: ${todo.dueDate}`;
@@ -133,6 +136,9 @@ export function displayController() {
     const addChecklistBtn = document.querySelector('#add-checklist-button');
     const addChecklist = document.querySelector('#add-checklist');
 
+    const addListItemBtn = document.querySelector('#add-todo-list-inputs-btn');
+    const addTodoListInputs = document.querySelector('#add-todo-list-inputs');
+
     addTodoBtn.addEventListener('click', () => {
         //generate projects as options in dropdown
         let projectDropdown = document.querySelector('#select-todo-project');
@@ -159,6 +165,13 @@ export function displayController() {
         addChecklistBtn.classList.add('hidden');
         addChecklist.classList.remove('hidden');      
     })
+    addListItemBtn.addEventListener('click', () => {
+        let newItemInput = document.createElement('li');
+        newItemInput.classList.add('extra-checklist-input');
+        newItemInput.innerHTML = 
+            `<input type="text" name="checklist-array" id="todo-checklist">`;
+        addTodoListInputs.appendChild(newItemInput);
+    })
     submitTodoBtn.addEventListener('click', () => {
         addTodo();
         resetProjects();
@@ -177,6 +190,12 @@ export function displayController() {
         if (addChecklistBtn.classList.contains('hidden')) {
             addChecklistBtn.classList.remove('hidden');
             addChecklist.classList.add('hidden');
+            //  remove any extra input boxes:
+            let listContainer = document.querySelector('#add-todo-list-inputs');
+            let extraItems = document.querySelectorAll(".extra-checklist-input");
+            for (let i = extraItems.length; i > 0; i--) {
+                listContainer.removeChild(extraItems[i-1]);
+            }
         }
     })
 
@@ -191,10 +210,6 @@ export function displayController() {
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const isDone = false;
         const projectID = document.getElementById('select-todo-project').value;
-
-        for (let i = 0; i < checklist.length; i++) {
-            console.log('checklist array?: ' + checklist[i].value);
-        }
         
         handler.createTodo(title, desc, checklist, dueDate, priority, isDone, projectID);
     }

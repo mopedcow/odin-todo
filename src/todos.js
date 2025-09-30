@@ -10,15 +10,14 @@ export class Todo {
         this.projectID = projectID;
     }
 
-    setTitle(newTitle) { this.title = newTitle; }
-    
-    setDesc(newDesc) { this.desc = newDesc; }
-
-    setDueDate(newDate) { this.dueDate = newDate; }
-
-    setPriority(newPriority) { this.priority = newPriority; }
-
-    setProjectID(newProjectID) { this.projectID = newProjectID; }
+    changeAllProperties(newTitle, newDesc, newChecklist, newDueDate, newPriority, newProjectID) {
+        this.title = newTitle;
+        this.desc = newDesc;
+        this.checklist = newChecklist;
+        this.dueDate = newDueDate;
+        this.priority = newPriority;
+        this.projectID = newProjectID;
+    }
 
     toggleIsDone() {
         (!this.isDone) ? this.isDone = true : this.isDone = false;

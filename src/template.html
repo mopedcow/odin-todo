@@ -20,9 +20,12 @@
         </div>
     </div>
     
-    
+        <!-- Add/Edit Todo -->
+
     <dialog closedby="any" id="add-todo-dialog">
         <div id="add-todo-container">
+            <h2 id="new-todo-heading">New Todo</h2>
+            <h2 id="edit-todo-heading">Edit Todo</h2>
             <form id="add-todo-form">
                 <div id="add-title">
                     <label for="todo-title">Title:</label>
@@ -73,12 +76,18 @@
                 <div id="submit-todo">
                     <button type="submit" id="submit-todo-button" formmethod="dialog">Submit</button>
                 </div>
+                <div id="change-todo">
+                    <button type="submit" id="change-todo-button" formmethod="dialog">Make changes</button>
+                </div>
             </form>
         </div>
     </dialog>
 
+        <!-- Add Project -->
+
     <dialog closedby="any" id="add-project-dialog">
         <div id="add-project-container">
+            <h2>New Project</h2>
             <form id="add-project-form">
                 <div id="add-title">
                     <label for="project-title">Title:</label>

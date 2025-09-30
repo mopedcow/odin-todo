@@ -20,14 +20,15 @@ export function displayController() {
     }
 
     function generateProjects() {
-        //console.log('top of generate projects!!!!!');
         let sortedProjects = handler.sortArrayByPriority(handler.projects);
         let sortedTodos = handler.sortArrayByPriority(handler.todos);
 
         sortedProjects.forEach( (project) => {
             let projectDiv = document.createElement('div');
             let projectTitle = document.createElement('h1');
+
             projectTitle.textContent = project.title;
+
             projectDiv.classList.add('project-container');
             projectDiv.appendChild(projectTitle);
 
@@ -37,17 +38,19 @@ export function displayController() {
                 let todoDiv = document.createElement('div');
                 todoDiv.classList.add('todo-container');
 
+                //todo title
                 let todoTitle = document.createElement('h2');
                 todoTitle.textContent = todo.title;
 
-                //check if description present
-                //  if none, hide this div
+                //todo description
                 let todoDesc = document.createElement('p');
                 todoDesc.textContent = `Description: ${todo.desc}`;
+                //  if no description, hide this element
                 if (todo.desc === '') {
                     todoDesc.classList.add('hidden');
                 }
 
+                //todo checklist
                 let todoChecklist = document.createElement('div');
                 todoChecklist.innerHTML = 
                     `<p>Checklist:</p>`;
@@ -57,6 +60,7 @@ export function displayController() {
                     li.textContent = item.value;
                     todoChecklistOL.appendChild(li);
                 })
+                //  if no checklist, hide this element
                 todoChecklist.appendChild(todoChecklistOL);
                 if (todo.checklist.length === 0) {
                     todoChecklist.classList.add('hidden');
@@ -65,12 +69,13 @@ export function displayController() {
                 let todoDueDate = document.createElement('span');
                 todoDueDate.textContent = `Due: ${todo.dueDate}`;
 
-                //for todo.priority, change color of todo based on number [not added yet]
+                //todo priority
                 let todoPriority = document.createElement('div');
-                //ALSO display high, medium, or low:
+                //  change color of todo based on number [not added yet]
+                //  display high, medium, or low:
                 todoPriority.textContent = todo.getPriorityByName();
                 
-                //for status, let user toggle:
+                //todo status (button)
                 let todoStatus = document.createElement('button');
                 todoStatus.textContent = `Complete?: ${todo.isDone}`;
                 todoStatus.classList.add('toggle-status-btn');
@@ -121,6 +126,26 @@ export function displayController() {
         editBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
                 console.log('edit btn clicked: ' + e.target.id);
+                //open 'add todo' dialog;
+                //use todo's ID to fill in all the fields
+                //on submit, change the todo instead of creating a new one
+                //(create a new method on todo class that changes all properties at once)
+            let projectDropdown = document.querySelector('#select-todo-project');
+            projectDropdown.options.length = 0;
+            handler.projects.forEach( (project) => {
+                let option = document.createElement('option');
+                option.text = project.title;
+                option.value = project.ID;
+                projectDropdown.add(option);
+            })
+
+            //hide 'add new' options in dialog; show 'edit' ones
+            addTodoHeading.classList.add('hidden');
+            addTodoSubmit.classList.add('hidden');
+            editTodoHeading.classList.remove('hidden');
+            editTodoSubmit.classList.remove('hidden');
+            
+            addTodoDialog.showModal();
             })
         })
     }
@@ -142,6 +167,12 @@ export function displayController() {
     const addListItemBtn = document.querySelector('#add-todo-list-inputs-btn');
     const addTodoListInputs = document.querySelector('#add-todo-list-inputs');
 
+    //Hide or show depending on whether adding to editing a todo
+    const addTodoHeading = document.getElementById('new-todo-heading');
+    const addTodoSubmit = document.getElementById('submit-todo');
+    const editTodoHeading = document.getElementById('edit-todo-heading');
+    const editTodoSubmit = document.getElementById('change-todo');
+
     addTodoBtn.addEventListener('click', () => {
         //generate projects as options in dropdown
         let projectDropdown = document.querySelector('#select-todo-project');
@@ -152,9 +183,17 @@ export function displayController() {
             option.value = project.ID;
             projectDropdown.add(option);
         })
+
+        //hide 'edit' options in dialog; show 'add new' ones
+        editTodoHeading.classList.add('hidden');
+        editTodoSubmit.classList.add('hidden');
+        addTodoHeading.classList.remove('hidden');
+        addTodoSubmit.classList.remove('hidden');
         
         addTodoDialog.showModal();
     })
+
+    
 
     addDescBtn.addEventListener('click', () => {
         addDescBtn.classList.add('hidden');

@@ -2,8 +2,6 @@ import { Handler } from "./logicHandler.js";
 
 
 export function displayController() {
-    //console.log('top of domcontroller!!!');
-
     const handler = Handler();
     const mainDisplay = document.querySelector('#content');
 
@@ -11,8 +9,7 @@ export function displayController() {
         const projects = document.querySelectorAll('.project-container');
         for (let i = projects.length-1; i >= 0; i--) {
             projects[i].remove();
-        }
-    }
+    }}
 
     function resetProjects() {
         wipeProjects();
@@ -49,7 +46,7 @@ export function displayController() {
                 if (todo.desc === '') {
                     todoDesc.classList.add('hidden');
                 }
-
+/* */   
                 //todo checklist
                 let todoChecklist = document.createElement('div');
                 todoChecklist.innerHTML = 
@@ -57,6 +54,7 @@ export function displayController() {
                 let todoChecklistOL = document.createElement('ol');
                 todo.checklist.forEach((item) => {
                     let li = document.createElement('li');
+                    //  add button to toggle list item complete/incomplete
                     li.textContent = item.value;
                     todoChecklistOL.appendChild(li);
                 })
@@ -152,6 +150,7 @@ export function displayController() {
                 if (targetTodo.dueDate !== '') {
                     showDueDate();
                 }
+/* */
                 if (targetTodo.checklist.length !== 0) {
                     showChecklist();
                     //populate the checklist items
@@ -159,14 +158,15 @@ export function displayController() {
                         const makeLi = document.createElement('li');
                         const makeInput = document.createElement('input');
                         makeLi.id = 'todo-checklist';
+                        makeInput.name = 'checklist-array';
+                        makeInput.type = 'text';
                         makeInput.value = tick.value;
                         makeLi.appendChild(makeInput);
                         addTodoListInputs.appendChild(makeLi);
-
+                        console.log('in editbtns e listener (tick): ' + tick);
+                        console.log('in editbtns e listener (tick.value): ' + tick.value);
                     })
-                }
-
-                
+                }                
                 addTodoDialog.showModal();
             })
         })
@@ -182,7 +182,7 @@ export function displayController() {
 
     const addDueDateBtn = document.querySelector('#add-due-date-button');
     const addDueDate = document.querySelector('#add-due-date');
-
+/** */
     const addChecklistBtn = document.querySelector('#add-checklist-button');
     const addChecklist = document.querySelector('#add-checklist');
 
@@ -208,8 +208,11 @@ export function displayController() {
     //records index of 'todo' being edited currently
     let targetIndex;
 
-    //add an (li) element (used when creating checklist items)
-    //const makeLi = document.createElement('li');
+    const addProjectDialog = document.querySelector('#add-project-dialog');
+    const addProjectBtn = document.querySelector('#add-project-btn');
+    const submitProjectBtn = document.querySelector('#submit-project-button');
+
+    const addProjectForm = document.querySelector('#add-project-form');
 
     addTodoBtn.addEventListener('click', () => {
 
@@ -220,7 +223,7 @@ export function displayController() {
         addTodoSubmit.classList.remove('hidden');
 
         populateProjectsDropdown();
-        
+
         addTodoDialog.showModal();
     })
 
@@ -240,6 +243,7 @@ export function displayController() {
         addDueDateBtn.classList.add('hidden');
         addDueDate.classList.remove('hidden');
     }
+/** 
     addChecklistBtn.addEventListener('click', () => {
         showChecklist();
         generateChecklist();      
@@ -249,6 +253,7 @@ export function displayController() {
         addChecklistBtn.classList.add('hidden');
         addChecklist.classList.remove('hidden');
     }
+*/
     function generateChecklist() {
         for (let i = 3; i > 0; i--) {
             const makeLi = document.createElement('li');
@@ -258,16 +263,15 @@ export function displayController() {
             addTodoListInputs.appendChild(makeLi);
         }
     }
+/** 
     addListItemBtn.addEventListener('click', () => {
         let newItemInput = document.createElement('li');
         newItemInput.id = 'todo-checklist';
-        //remove the following 1 line:
-        //newItemInput.classList.add('extra-checklist-input');
-        //keep this:
         newItemInput.innerHTML = 
             `<input type="text" name="checklist-array">`;
         addTodoListInputs.appendChild(newItemInput);
     })
+*/
     submitTodoBtn.addEventListener('click', () => {
         addTodo();
         resetProjects();
@@ -275,7 +279,6 @@ export function displayController() {
     })
 
     SubmitEditsBtn.addEventListener('click', () => {
-        
         console.log('Make changes clicked: ' + handler.todos[targetIndex].title);
         editTodo(targetIndex);
         resetProjects();
@@ -292,18 +295,23 @@ export function displayController() {
             addDescBtn.classList.remove('hidden');
             addDesc.classList.add('hidden');
         }
+
+        /** //  hide/show checkboxes
         if (addChecklistBtn.classList.contains('hidden')) {
             addChecklistBtn.classList.remove('hidden');
             addChecklist.classList.add('hidden');
         }
-            
-        // remove ALL input boxes(li elements):
+        */
+         
+        /** // remove ALL input boxes(li elements):
+        
         let listContainer = document.querySelector('#add-todo-list-inputs');
         let listItems = document.querySelectorAll("#todo-checklist");
         for (let i = listItems.length; i > 0; i--) {
             console.log('deleted an item');
             listContainer.removeChild(listItems[i-1]);
         }
+         */
     })
 
     function populateProjectsDropdown() {
@@ -320,6 +328,7 @@ export function displayController() {
     function addTodo() {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
+/** */
         const checklist = 
             (addChecklistBtn.classList.contains('hidden')) 
             ? document.getElementsByName('checklist-array') 
@@ -330,11 +339,15 @@ export function displayController() {
         const projectID = document.getElementById('select-todo-project').value;
         
         handler.createTodo(title, desc, checklist, dueDate, priority, isDone, projectID);
+        //checklist returns NodeList with 0 entries?
+        console.log(handler.todos);
+        console.log(checklist);
     }
 
     function editTodo(todoIndex) {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
+/** */
         const checklist = 
             (addChecklistBtn.classList.contains('hidden')) 
             ? document.getElementsByName('checklist-array') 
@@ -343,14 +356,14 @@ export function displayController() {
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const projectID = document.getElementById('select-todo-project').value;
 
-        handler.todos[todoIndex].changeAllProperties(title, desc, checklist, dueDate, priority, projectID);
+        //handler.todos[todoIndex].changeAllProperties(title, desc, checklist, dueDate, priority, projectID);
+        //checklist returns NodeList with 0 entries?
+        console.log('nodelist? ' + checklist);
+        const array = Array.prototype.slice.call(checklist);
+        console.log('array? ' + array);
+        handler.todos[todoIndex].changeAllProperties(title, desc, array, dueDate, priority, projectID);
+        console.log(handler.todos[todoIndex].checklist[0].value);
     }
-
-    const addProjectDialog = document.querySelector('#add-project-dialog');
-    const addProjectBtn = document.querySelector('#add-project-btn');
-    const submitProjectBtn = document.querySelector('#submit-project-button');
-
-    const addProjectForm = document.querySelector('#add-project-form');
 
     addProjectBtn.addEventListener('click', () => {
         addProjectDialog.showModal();

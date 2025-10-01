@@ -38,16 +38,15 @@
                     <label for="desc">Description:</label>
                     <textarea rows="2" id="desc" name="description"></textarea>
                 </div>
-                <div id="add-checklist-button">
+                <div id="add-checklist-button" class="hidden">
                     <button type="button" id="add-checklist-btn">Add a checklist...</button>
                 </div>
-                <div id="add-checklist" class="hidden">
+                <div id="add-checklist">
                     <label for="todo-checklist">Checklist: </label>
                     <ol id="add-todo-list-inputs">
-                            <!--remove li's
-                        <li><input type="text" name="checklist-array" id="todo-checklist"></li>
-                        <li><input type="text" name="checklist-array" id="todo-checklist"></li>
-                        <li><input type="text" name="checklist-array" id="todo-checklist"></li> -->
+                        <li><input type='text' id='todo-checklist'></li>
+                        <li><input type='text' id='todo-checklist'></li>
+                        <li><input type='text' id='todo-checklist'></li>
                     </ol>
                     <button type="button" id="add-todo-list-inputs-btn">Add another item...</button>
                 </div>

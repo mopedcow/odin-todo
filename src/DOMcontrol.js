@@ -58,8 +58,9 @@ export function displayController() {
                     li.textContent = item.value;
                     todoChecklistOL.appendChild(li);
                 })
-                //  if no checklist, hide this element
                 todoChecklist.appendChild(todoChecklistOL);
+
+                //  if no checklist, hide this element
                 if (todo.checklist.length === 0) {
                     todoChecklist.classList.add('hidden');
                 }
@@ -325,23 +326,33 @@ export function displayController() {
         })
     }
 
+    function makeArrayFromNodeList(nodeList) {
+        let makeArray = [];
+        for (let i = 0; i < nodeList.length; i++) {
+            let obj = {
+                value: '',
+                isDone: false
+                };
+            obj.value = nodeList[i].value;
+            makeArray.push(obj);
+        }
+        return makeArray;
+    }
+
     function addTodo() {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
 /** */
-        const checklist = 
-            (addChecklistBtn.classList.contains('hidden')) 
-            ? document.getElementsByName('checklist-array') 
-            : [];
+        const checklist = (addChecklistBtn.classList.contains('hidden'))
+        ? makeArrayFromNodeList(document.querySelectorAll('.checklist-array'))
+        : [];
+
         const dueDate = document.getElementById('due-date').value;
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const isDone = false;
         const projectID = document.getElementById('select-todo-project').value;
         
         handler.createTodo(title, desc, checklist, dueDate, priority, isDone, projectID);
-        //checklist returns NodeList with 0 entries?
-        console.log(handler.todos);
-        console.log(checklist);
     }
 
     function editTodo(todoIndex) {

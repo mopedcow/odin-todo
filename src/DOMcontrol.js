@@ -153,7 +153,7 @@ export function displayController() {
                 }
 /* */
                 if (targetTodo.checklist.length !== 0) {
-                    showChecklist();
+                    //showChecklist();
                     //populate the checklist items
                     targetTodo.checklist.forEach((tick) => {
                         const makeLi = document.createElement('li');
@@ -328,25 +328,26 @@ export function displayController() {
 
     function makeArrayFromNodeList(nodeList) {
         let makeArray = [];
-        for (let i = 0; i < nodeList.length; i++) {
+        nodeList.forEach ((node) => {
             let obj = {
                 value: '',
                 isDone: false
                 };
-            obj.value = nodeList[i].value;
-            makeArray.push(obj);
-        }
+            if (node.value !== ''){      //skip empty values
+                obj.value = node.value;
+                makeArray.push(obj);
+        }})
         return makeArray;
     }
 
     function addTodo() {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
-/** */
-        const checklist = (addChecklistBtn.classList.contains('hidden'))
-        ? makeArrayFromNodeList(document.querySelectorAll('.checklist-array'))
-        : [];
-
+/**/    //  confirm a not-empty checklist has been added
+        let nodelist = document.querySelectorAll('.checklist-array');
+        const checklist = (nodelist.length !== 0)
+            ? makeArrayFromNodeList(nodelist)
+            : [];
         const dueDate = document.getElementById('due-date').value;
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const isDone = false;
@@ -358,22 +359,16 @@ export function displayController() {
     function editTodo(todoIndex) {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
-/** */
-        const checklist = 
-            (addChecklistBtn.classList.contains('hidden')) 
-            ? document.getElementsByName('checklist-array') 
+/** */  //  confirm a not-empty checklist has been added
+        let nodelist = document.querySelectorAll('.checklist-array');
+        const checklist = (nodelist[0].value !== '')
+            ? makeArrayFromNodeList(nodelist)
             : [];
         const dueDate = document.getElementById('due-date').value;
         const priority = document.querySelector('input[name="todo-priority"]:checked').value;
         const projectID = document.getElementById('select-todo-project').value;
 
-        //handler.todos[todoIndex].changeAllProperties(title, desc, checklist, dueDate, priority, projectID);
-        //checklist returns NodeList with 0 entries?
-        console.log('nodelist? ' + checklist);
-        const array = Array.prototype.slice.call(checklist);
-        console.log('array? ' + array);
-        handler.todos[todoIndex].changeAllProperties(title, desc, array, dueDate, priority, projectID);
-        console.log(handler.todos[todoIndex].checklist[0].value);
+        handler.todos[todoIndex].changeAllProperties(title, desc, checklist, dueDate, priority, projectID);
     }
 
     addProjectBtn.addEventListener('click', () => {
@@ -429,12 +424,7 @@ export function displayController() {
 
     handler.createTodo('Wash dishes','Wash dishes', [], 'today', 2, true, handler.projects[0].ID);
     handler.createTodo('Make dinner','Make dinner', [], 'tonight', 1, false, handler.projects[0].ID);
-    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread'},{value:'cheese'},{value:'milk'}], 'weekend', 0, false, handler.projects[0].ID);
-
-//['bread','cheese','milk']
-//[{value:'bread'},{value:'cheese'},{value:'milk'}]
-
-
+    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread', isDone: true},{value:'cheese', isDone: false},{value:'milk', isDone: false}], 'weekend', 0, false, handler.projects[0].ID);
 
     return {
         generateProjects,

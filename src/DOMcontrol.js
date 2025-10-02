@@ -141,6 +141,17 @@ export function displayController() {
                 formTitle.value = targetTodo.title;
                 formDesc.value = targetTodo.desc;
                 formDueDate.value = targetTodo.dueDate;
+                switch (targetTodo.priority) {
+                    case 0:
+                        formPHigh.checked = true;
+                        break;
+                    case 1:
+                        formPMedium.checked = true;
+                        break;
+                    case 2:
+                        formPLow.checked = true;
+                        break;
+                }
                 
                 //show hidden elements if the corresponding properties are not empty
                 if (targetTodo.desc !== '') {
@@ -193,9 +204,9 @@ export function displayController() {
     const formDesc = document.getElementById('desc');
     const formChecklistOL = document.getElementById('add-todo-list-inputs');
     const formDueDate = document.getElementById('due-date');
-    const formPHigh = document.getElementById('todo-0');
-    const formPMedium = document.getElementById('todo-1');
-    const formPLow = document.getElementById('todo-2');
+    const formPHigh = document.getElementById('priority-0');
+    const formPMedium = document.getElementById('priority-1');
+    const formPLow = document.getElementById('priority-2');
     const formProjectDropdown = document.getElementById('select-todo-project'); 
 
     // 'Add' or 'Edit'?

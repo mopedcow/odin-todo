@@ -129,8 +129,6 @@ export function displayController() {
                 targetIndex = handler.getTodoIndexByID(e.target.id);
                 let targetTodo = handler.todos[targetIndex];
 
-                console.log('Editing: ' + targetTodo.title);
-
                 //hide 'add new' options in dialog; show 'edit' ones
                 addTodoHeading.classList.add('hidden');
                 addTodoSubmit.classList.add('hidden');
@@ -152,18 +150,13 @@ export function displayController() {
                     showDueDate();
                 }
                 if (targetTodo.checklist.length !== 0) {
-                    //remove 'hidden' from div:
-                    //  showChecklist();
-
+                    showChecklist();
                     //generate the number of inputs corresponding to checklist length:
                     generateChecklist(targetTodo.checklist.length);
-
                     //get nodelist of checklist inputs that were created above
                     let checklistInputs = document.querySelectorAll('.checklist-array');
-
                     //loop thru above and assign value equal to todo checklist values
                     for (let i = 0; i < checklistInputs.length; i++) {
-                        console.log(targetTodo.checklist[i].value);
                         checklistInputs[i].value = targetTodo.checklist[i].value;
                     }
                 }                
@@ -188,10 +181,10 @@ export function displayController() {
       //  add due date
     const addDueDateBtn = document.querySelector('#add-due-date-button');
     const addDueDate = document.querySelector('#add-due-date');
-/**///    add checklist
+      //  add checklist
     const addChecklistBtn = document.querySelector('#add-checklist-button');
     const addChecklist = document.querySelector('#add-checklist');
-     //  add checklist item
+      //  add checklist item
     const addListItemBtn = document.querySelector('#add-todo-list-inputs-btn');
     const addTodoListInputs = document.querySelector('#add-todo-list-inputs');
 
@@ -220,7 +213,6 @@ export function displayController() {
     const addProjectForm = document.querySelector('#add-project-form');
 
     addTodoBtn.addEventListener('click', () => {
-
         //hide 'edit' options in dialog; show 'add new' ones
         editTodoHeading.classList.add('hidden');
         SubmitEditsDiv.classList.add('hidden');
@@ -228,7 +220,6 @@ export function displayController() {
         addTodoSubmit.classList.remove('hidden');
 
         populateProjectsDropdown();
-        generateChecklist(3);
 
         addTodoDialog.showModal();
     })
@@ -249,41 +240,41 @@ export function displayController() {
         addDueDateBtn.classList.add('hidden');
         addDueDate.classList.remove('hidden');
     }
-/** 
+
     addChecklistBtn.addEventListener('click', () => {
         showChecklist();
-        generateChecklist();      
+        generateChecklist(3);      
     })
 
     function showChecklist() {
         addChecklistBtn.classList.add('hidden');
         addChecklist.classList.remove('hidden');
     }
-*/
+
     function generateChecklist(num) {
-        // checklist ol: addTodoListInputs
         for (let i = 1; i <= num; i++) {
-            const li = document.createElement('li');
-            const label = document.createElement('label');
-            label.htmlFor = `check${i}`;
-            label.textContent = `${i}:`;
-            label.classList.add('add-checklist-label');
-            li.classList.add('add-checklist-input');
-            li.innerHTML = 
-            `<input type="text" id="check${i}" class="checklist-array">`;
-            addTodoListInputs.appendChild(label);
-            addTodoListInputs.appendChild(li);
+            generateChecklistElement(i);
         }
     }
-/** 
+    function generateChecklistElement(index) {
+        // checklist ol: addTodoListInputs
+        const li = document.createElement('li');
+        const label = document.createElement('label');
+        label.htmlFor = `check${index}`;
+        label.textContent = `${index}:`;
+        label.classList.add('add-checklist-label');
+        li.classList.add('add-checklist-input');
+        li.innerHTML = 
+        `<input type="text" id="check${index}" class="checklist-array">`;
+        addTodoListInputs.appendChild(label);
+        addTodoListInputs.appendChild(li);
+    }
+
     addListItemBtn.addEventListener('click', () => {
-        let newItemInput = document.createElement('li');
-        newItemInput.id = 'todo-checklist';
-        newItemInput.innerHTML = 
-            `<input type="text" name="checklist-array">`;
-        addTodoListInputs.appendChild(newItemInput);
+        let index = document.querySelectorAll('.add-checklist-input').length;
+        generateChecklistElement(index+1);
     })
-*/
+
     submitTodoBtn.addEventListener('click', () => {
         addTodo();
         resetProjects();
@@ -291,8 +282,6 @@ export function displayController() {
     })
 
     SubmitEditsBtn.addEventListener('click', () => {
-        console.log('Make changes clicked: ' + handler.todos[targetIndex].title);
-        
         editTodo(targetIndex);
         resetProjects();
         addTodoDialog.close();
@@ -308,19 +297,15 @@ export function displayController() {
             addDescBtn.classList.remove('hidden');
             addDesc.classList.add('hidden');
         }
-
-        /** //  hide/show checklist
+        //  hide/show checklist
         if (addChecklistBtn.classList.contains('hidden')) {
             addChecklistBtn.classList.remove('hidden');
             addChecklist.classList.add('hidden');
         }
-        **/
-
         // remove ALL input boxes(li elements):
         let listContainer = addTodoListInputs;
         let listItems = document.querySelectorAll(".add-checklist-input");
         let listLabels = document.querySelectorAll(".add-checklist-label");
-        console.log('li array: ' + listItems.length);
         for (let i = listItems.length; i > 0; i--) {
             listContainer.removeChild(listItems[i-1]);
             listContainer.removeChild(listLabels[i-1]);
@@ -356,7 +341,7 @@ export function displayController() {
     function getFormInfo() {
         const title = document.getElementById('todo-title').value;
         const desc = document.getElementById('desc').value;
-/**/    //  confirm a not-empty checklist has been added
+        //  confirm a not-empty checklist has been added
         let nodelist = document.querySelectorAll('.checklist-array');
         const checklist = (nodelist.length !== 0)
             ? makeArrayFromNodeList(nodelist)

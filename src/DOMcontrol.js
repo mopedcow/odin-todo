@@ -126,8 +126,6 @@ export function displayController() {
 
         editBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
-                console.log('edit btn clicked: ' + e.target.id);
-            
                 targetIndex = handler.getTodoIndexByID(e.target.id);
                 let targetTodo = handler.todos[targetIndex];
 
@@ -153,22 +151,21 @@ export function displayController() {
                 if (targetTodo.dueDate !== '') {
                     showDueDate();
                 }
-/* */
                 if (targetTodo.checklist.length !== 0) {
-                    //showChecklist();
-                    //populate the checklist items
-                    targetTodo.checklist.forEach((tick) => {
-                        const makeLi = document.createElement('li');
-                        const makeInput = document.createElement('input');
-                        makeLi.id = 'todo-checklist';
-                        makeInput.name = 'checklist-array';
-                        makeInput.type = 'text';
-                        makeInput.value = tick.value;
-                        makeLi.appendChild(makeInput);
-                        addTodoListInputs.appendChild(makeLi);
-                        console.log('in editbtns e listener (tick): ' + tick);
-                        console.log('in editbtns e listener (tick.value): ' + tick.value);
-                    })
+                    //remove 'hidden' from div:
+                    //  showChecklist();
+
+                    //generate the number of inputs corresponding to checklist length:
+                    generateChecklist(targetTodo.checklist.length);
+
+                    //get nodelist of checklist inputs that were created above
+                    let checklistInputs = document.querySelectorAll('.checklist-array');
+
+                    //loop thru above and assign value equal to todo checklist values
+                    for (let i = 0; i < checklistInputs.length; i++) {
+                        console.log(targetTodo.checklist[i].value);
+                        checklistInputs[i].value = targetTodo.checklist[i].value;
+                    }
                 }                
                 addTodoDialog.showModal();
             })
@@ -266,11 +263,12 @@ export function displayController() {
     function generateChecklist(num) {
         // checklist ol: addTodoListInputs
         for (let i = 1; i <= num; i++) {
-            console.log(i);
             const li = document.createElement('li');
             const label = document.createElement('label');
             label.htmlFor = `check${i}`;
             label.textContent = `${i}:`;
+            label.classList.add('add-checklist-label');
+            li.classList.add('add-checklist-input');
             li.innerHTML = 
             `<input type="text" id="check${i}" class="checklist-array">`;
             addTodoListInputs.appendChild(label);
@@ -311,22 +309,23 @@ export function displayController() {
             addDesc.classList.add('hidden');
         }
 
-        /** //  hide/show checkboxes
+        /** //  hide/show checklist
         if (addChecklistBtn.classList.contains('hidden')) {
             addChecklistBtn.classList.remove('hidden');
             addChecklist.classList.add('hidden');
         }
-        */
-         
-        /** // remove ALL input boxes(li elements):
-        
-        let listContainer = document.querySelector('#add-todo-list-inputs');
-        let listItems = document.querySelectorAll("#todo-checklist");
+        **/
+
+        // remove ALL input boxes(li elements):
+        let listContainer = addTodoListInputs;
+        let listItems = document.querySelectorAll(".add-checklist-input");
+        let listLabels = document.querySelectorAll(".add-checklist-label");
+        console.log('li array: ' + listItems.length);
         for (let i = listItems.length; i > 0; i--) {
-            console.log('deleted an item');
             listContainer.removeChild(listItems[i-1]);
+            listContainer.removeChild(listLabels[i-1]);
         }
-         */
+
     })
 
     function populateProjectsDropdown() {

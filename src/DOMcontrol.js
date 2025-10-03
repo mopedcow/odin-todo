@@ -137,10 +137,18 @@ export function displayController() {
 
                 populateProjectsDropdown();
 
-                //populate form with existing todo properties
+                // populate form with existing todo properties
                 formTitle.value = targetTodo.title;
                 formDesc.value = targetTodo.desc;
                 formDueDate.value = targetTodo.dueDate;
+                //  select the Project
+                for (let i = 0; i < formProjectDropdown.options.length; i++) {
+                    if (formProjectDropdown.options[i].value === targetTodo.projectID) {
+                        formProjectDropdown.selectedIndex = i;
+                    }
+                }
+                
+                //  select the Priority
                 switch (targetTodo.priority) {
                     case 0:
                         formPHigh.checked = true;
@@ -325,13 +333,12 @@ export function displayController() {
     })
 
     function populateProjectsDropdown() {
-        let projectDropdown = document.querySelector('#select-todo-project');
-        projectDropdown.options.length = 0;
+        formProjectDropdown.options.length = 0;
         handler.projects.forEach( (project) => {
             let option = document.createElement('option');
             option.text = project.title;
             option.value = project.ID;
-            projectDropdown.add(option);
+            formProjectDropdown.add(option);
         })
     }
 
@@ -358,7 +365,7 @@ export function displayController() {
             ? makeArrayFromNodeList(nodelist)
             : [];
         const dueDate = document.getElementById('due-date').value;
-        const priority = document.querySelector('input[name="todo-priority"]:checked').value;
+        const priority = Number(document.querySelector('input[name="todo-priority"]:checked').value);
         const isDone = false;
         const projectID = document.getElementById('select-todo-project').value;
 

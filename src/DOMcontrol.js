@@ -1,4 +1,5 @@
 import { is } from "date-fns/locale";
+import { format } from "date-fns"
 import { Handler } from "./logicHandler.js";
 
 
@@ -68,7 +69,16 @@ export function displayController() {
 
                 // todo due date
                 let todoDueDate = document.createElement('span');
-                todoDueDate.textContent = `Due: ${todo.dueDate}`;
+                
+                // if no due date, hide this element
+                // if due date, get formatted date
+                if (todo.dueDate === '') {
+                    todoDueDate.classList.add('hidden');
+                } else {
+                    let formDate = format(todo.dueDate, 'd MMM yyyy');
+                    todoDueDate.textContent = `Due: ${formDate}`;
+                }
+                
 
                 // todo priority
                 let todoPriority = document.createElement('div');
@@ -380,6 +390,7 @@ export function displayController() {
     }
     function addTodo() {
         let inputs = getFormInfo();
+        console.log(inputs.dueDate);
         handler.createTodo(
             inputs.title, 
             inputs.desc, 
@@ -451,13 +462,13 @@ export function displayController() {
     handler.createProject('House', '1');
     handler.createProject('Baby', '0');
 
-    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], 'today', 1, false, handler.projects[1].ID);
-    handler.createTodo('Feed','Feed Adaidh', [], 'today', 0, true, handler.projects[1].ID);
-    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], 'today', 1, false, handler.projects[1].ID);
+    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], '2025-10-31', 1, false, handler.projects[1].ID);
+    handler.createTodo('Feed','Feed Adaidh', [], '2025-10-31', 0, true, handler.projects[1].ID);
+    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], '2025-10-31', 1, false, handler.projects[1].ID);
 
-    handler.createTodo('Wash dishes','Wash dishes', [], 'today', 2, true, handler.projects[0].ID);
-    handler.createTodo('Make dinner','Make dinner', [], 'tonight', 1, false, handler.projects[0].ID);
-    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread', isDone: true},{value:'cheese', isDone: false},{value:'milk', isDone: false}], 'weekend', 0, false, handler.projects[0].ID);
+    handler.createTodo('Wash dishes','Wash dishes', [], '2025-10-31', 2, true, handler.projects[0].ID);
+    handler.createTodo('Make dinner','Make dinner', [], '2025-10-31', 1, false, handler.projects[0].ID);
+    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread', isDone: true},{value:'cheese', isDone: false},{value:'milk', isDone: false}], '2025-10-31', 0, false, handler.projects[0].ID);
 
     return {
         generateProjects,

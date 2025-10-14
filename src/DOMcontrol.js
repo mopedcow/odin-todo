@@ -7,6 +7,53 @@ export function displayController() {
     const handler = Handler();
     const mainDisplay = document.querySelector('#content');
 
+        // butons in header
+    const addTodoBtn = document.querySelector('#add-todo-btn');
+    const addProjectBtn = document.querySelector('#add-project-btn');
+
+    // 'add todo' dialog
+    const addTodoForm = document.querySelector('#add-todo-form');
+    const addTodoDialog = document.querySelector('#add-todo-dialog');
+    const submitTodoBtn = document.querySelector('#submit-todo-button');
+
+    // options in 'add todo' dialog
+       //  add description
+    const addDescBtn = document.querySelector('#add-desc-button');
+    const addDesc = document.querySelector('#add-desc');
+      //  add due date
+    const addDueDateBtn = document.querySelector('#add-due-date-button');
+    const addDueDate = document.querySelector('#add-due-date');
+      //  add checklist
+    const addChecklistBtn = document.querySelector('#add-checklist-button');
+    const addChecklist = document.querySelector('#add-checklist');
+      //  add checklist item
+    const addListItemBtn = document.querySelector('#add-todo-list-inputs-btn');
+    const addTodoListInputs = document.querySelector('#add-todo-list-inputs');
+
+    // form fields in 'add todo' dialog
+    const formTitle = document.getElementById('todo-title');
+    const formDesc = document.getElementById('desc');
+    const formChecklistOL = document.getElementById('add-todo-list-inputs');
+    const formDueDate = document.getElementById('due-date');
+    const formPHigh = document.getElementById('priority-0');
+    const formPMedium = document.getElementById('priority-1');
+    const formPLow = document.getElementById('priority-2');
+    const formProjectDropdown = document.getElementById('select-todo-project'); 
+
+    // 'Add' or 'Edit'?
+    const addTodoHeading = document.getElementById('new-todo-heading');
+    const addTodoSubmit = document.getElementById('submit-todo');
+    const editTodoHeading = document.getElementById('edit-todo-heading');
+    const SubmitEditsDiv = document.getElementById('change-todo');
+    const SubmitEditsBtn = document.getElementById('change-todo-button');
+    // record index of 'todo' being edited currently
+    let targetIndex;
+
+    // 'add project' dialog
+    const addProjectDialog = document.querySelector('#add-project-dialog');
+    const submitProjectBtn = document.querySelector('#submit-project-button');
+    const addProjectForm = document.querySelector('#add-project-form');
+
     function wipeProjects() {
         const projects = document.querySelectorAll('.project-container');
         for (let i = projects.length-1; i >= 0; i--) {
@@ -24,12 +71,19 @@ export function displayController() {
 
         sortedProjects.forEach( (project) => {
             let projectDiv = document.createElement('div');
-            let projectTitle = document.createElement('h1');
+            let projectTitle = document.createElement('button');
+            let projectContent = document.createElement('div');
 
             projectTitle.textContent = project.title;
+            projectTitle.classList.add('project-title');
+            projectTitle.id = project.ID;
+
+            projectDiv.appendChild(projectTitle);
 
             projectDiv.classList.add('project-container');
-            projectDiv.appendChild(projectTitle);
+            projectContent.classList.add('project-content', 'hidden');
+            projectContent.id = project.ID;
+            // projectContent.classList.add('hidden');
 
             let projectTodos = handler.filterTodosByProjectID(sortedTodos, project.ID);
 
@@ -39,7 +93,30 @@ export function displayController() {
 
                 // todo title
                 let todoTitle = document.createElement('h2');
+                todoTitle.classList.add('todo-title');
                 todoTitle.textContent = todo.title;
+
+                // container for hidden content
+                let todoExpandedContent = document.createElement('div');
+                todoExpandedContent.classList.add('hidden');
+
+                // todo status (button)
+                let todoStatus = document.createElement('button');
+                todoStatus.textContent = `Complete?: ${todo.isDone}`;
+                todoStatus.classList.add('toggle-status-btn');
+                todoStatus.id = todo.todoID;
+
+                // delete todo button:
+                let delTodoBtn = document.createElement('button');
+                delTodoBtn.textContent = 'delete';
+                delTodoBtn.classList.add('todo-del-btn');
+                delTodoBtn.id = todo.todoID;
+
+                // edit todo button:
+                let SubmitEditsBtn = document.createElement('button');
+                SubmitEditsBtn.textContent = 'edit';
+                SubmitEditsBtn.classList.add('todo-edit-btn');
+                SubmitEditsBtn.id = todo.todoID;
 
                 // todo description
                 let todoDesc = document.createElement('p');
@@ -78,42 +155,34 @@ export function displayController() {
                     let formDate = format(todo.dueDate, 'd MMM yyyy');
                     todoDueDate.textContent = `Due: ${formDate}`;
                 }
-                
 
+                let todoExpandBtn = document.createElement('button');
+                todoExpandBtn.classList.add('todo-expand-btn');
+                todoExpandBtn.textContent = 'Expand...';
+                todoExpandBtn.id = todo.todoID;
+                
                 // todo priority
                 let todoPriority = document.createElement('div');
                     //  change color of todo based on number [not added yet]
                     //  display high, medium, or low:
                 todoPriority.textContent = todo.getPriorityByName();
-                
-                // todo status (button)
-                let todoStatus = document.createElement('button');
-                todoStatus.textContent = `Complete?: ${todo.isDone}`;
-                todoStatus.classList.add('toggle-status-btn');
-                todoStatus.id = todo.todoID;
-
-                // delete todo button:
-                let delTodoBtn = document.createElement('button');
-                delTodoBtn.textContent = 'delete';
-                delTodoBtn.classList.add('todo-del-btn');
-                delTodoBtn.id = todo.todoID;
-
-                // edit todo button:
-                let SubmitEditsBtn = document.createElement('button');
-                SubmitEditsBtn.textContent = 'edit';
-                SubmitEditsBtn.classList.add('todo-edit-btn');
-                SubmitEditsBtn.id = todo.todoID;
 
                 todoDiv.appendChild(todoTitle);
-                todoDiv.appendChild(todoDesc);
-                todoDiv.appendChild(todoChecklist);
-                todoDiv.appendChild(todoDueDate);
-                todoDiv.appendChild(todoPriority);
                 todoDiv.appendChild(todoStatus);
                 todoDiv.appendChild(delTodoBtn);
                 todoDiv.appendChild(SubmitEditsBtn);
+                todoDiv.appendChild(todoDueDate);
+                todoDiv.appendChild(todoExpandBtn);
 
-                projectDiv.appendChild(todoDiv);
+                todoExpandedContent.appendChild(todoPriority);
+                todoExpandedContent.appendChild(todoDesc);
+                todoExpandedContent.appendChild(todoChecklist);
+
+                todoDiv.appendChild(todoExpandedContent);
+
+                projectContent.appendChild(todoDiv);
+
+                projectDiv.appendChild(projectContent);
             })
             mainDisplay.appendChild(projectDiv);
         })
@@ -121,6 +190,20 @@ export function displayController() {
         let deleteBtns = document.querySelectorAll('.todo-del-btn');
         let editBtns = document.querySelectorAll('.todo-edit-btn');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
+        let expandTodoBtn = document.querySelectorAll('.todo-expand-btn');
+        let expandProjectBtn = document.querySelectorAll('.project-title');
+
+        expandTodoBtn.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                toggleExpandedTodo(e.target.id);
+            })
+        })
+
+        expandProjectBtn.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                toggleExpandedProject(e.target.id);
+            })
+        })
 
         deleteBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
@@ -194,52 +277,9 @@ export function displayController() {
         })
     }
 
-    // butons in header
-    const addTodoBtn = document.querySelector('#add-todo-btn');
-    const addProjectBtn = document.querySelector('#add-project-btn');
 
-    // 'add todo' dialog
-    const addTodoForm = document.querySelector('#add-todo-form');
-    const addTodoDialog = document.querySelector('#add-todo-dialog');
-    const submitTodoBtn = document.querySelector('#submit-todo-button');
 
-    // options in 'add todo' dialog
-       //  add description
-    const addDescBtn = document.querySelector('#add-desc-button');
-    const addDesc = document.querySelector('#add-desc');
-      //  add due date
-    const addDueDateBtn = document.querySelector('#add-due-date-button');
-    const addDueDate = document.querySelector('#add-due-date');
-      //  add checklist
-    const addChecklistBtn = document.querySelector('#add-checklist-button');
-    const addChecklist = document.querySelector('#add-checklist');
-      //  add checklist item
-    const addListItemBtn = document.querySelector('#add-todo-list-inputs-btn');
-    const addTodoListInputs = document.querySelector('#add-todo-list-inputs');
 
-    // form fields in 'add todo' dialog
-    const formTitle = document.getElementById('todo-title');
-    const formDesc = document.getElementById('desc');
-    const formChecklistOL = document.getElementById('add-todo-list-inputs');
-    const formDueDate = document.getElementById('due-date');
-    const formPHigh = document.getElementById('priority-0');
-    const formPMedium = document.getElementById('priority-1');
-    const formPLow = document.getElementById('priority-2');
-    const formProjectDropdown = document.getElementById('select-todo-project'); 
-
-    // 'Add' or 'Edit'?
-    const addTodoHeading = document.getElementById('new-todo-heading');
-    const addTodoSubmit = document.getElementById('submit-todo');
-    const editTodoHeading = document.getElementById('edit-todo-heading');
-    const SubmitEditsDiv = document.getElementById('change-todo');
-    const SubmitEditsBtn = document.getElementById('change-todo-button');
-    // record index of 'todo' being edited currently
-    let targetIndex;
-
-    // 'add project' dialog
-    const addProjectDialog = document.querySelector('#add-project-dialog');
-    const submitProjectBtn = document.querySelector('#submit-project-button');
-    const addProjectForm = document.querySelector('#add-project-form');
 
     addTodoBtn.addEventListener('click', () => {
         //hide 'edit' options in dialog; show 'add new' ones
@@ -390,7 +430,6 @@ export function displayController() {
     }
     function addTodo() {
         let inputs = getFormInfo();
-        console.log(inputs.dueDate);
         handler.createTodo(
             inputs.title, 
             inputs.desc, 
@@ -440,7 +479,6 @@ export function displayController() {
         let todoIndex = handler.getTodoIndexByID(targetID);
         handler.todos.splice(todoIndex, 1);
         resetProjects();
-        console.log(handler.todos);
     }
 
     function toggleStatus(targetID) {
@@ -452,23 +490,72 @@ export function displayController() {
         })
     }
 
+    function toggleExpandedTodo(id) {
+        console.log('expand clicked Todo: ' + id);
+        //get an array of objects w class .todo-expanded
+        //match to target id
+        //toggle class 'hidden'
+    }
 
+    function toggleExpandedProject(id) {
+        let projects = document.querySelectorAll('.project-content');
+        projects.forEach( (project) => {
+            if (project.id === id) {
+                if (project.classList.contains('hidden')) {
+                    project.classList.remove('hidden');
+                } else {
+                    project.classList.add('hidden');
+                }   
+            }})
+    }
+
+    /// Sorting and Expanding Projects and Todos
+
+    const viewProjectsBtn = document.getElementById('view-projects');
+    const expandProjectBtn = document.querySelectorAll('#expand-project');
+    const expandTodoBtn = document.querySelectorAll('#expand-todo');
+    function viewProjects(){}
 
 
 
         //testing:
 
+    
+    handler.createProject('Test Project 2', 1);
+    handler.createProject('Test Project 1', 0);
 
-    handler.createProject('House', '1');
-    handler.createProject('Baby', '0');
+    handler.createTodo('Test todo 1a', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 0, false, handler.projects[0].ID);
+    handler.createTodo('Test todo 2a', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 1, false, handler.projects[0].ID);
+    handler.createTodo('Test todo 3a', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 2, false, handler.projects[0].ID);
 
-    handler.createTodo('Change nappy','Change Adaidh\'s nappy', [], '2025-10-31', 1, false, handler.projects[1].ID);
-    handler.createTodo('Feed','Feed Adaidh', [], '2025-10-31', 0, true, handler.projects[1].ID);
-    handler.createTodo('Give medicine','Give Adaidh his Gaviscon', [], '2025-10-31', 1, false, handler.projects[1].ID);
 
-    handler.createTodo('Wash dishes','Wash dishes', [], '2025-10-31', 2, true, handler.projects[0].ID);
-    handler.createTodo('Make dinner','Make dinner', [], '2025-10-31', 1, false, handler.projects[0].ID);
-    handler.createTodo('Order groceries','Place order for groceries from Waitrose', [{value:'bread', isDone: true},{value:'cheese', isDone: false},{value:'milk', isDone: false}], '2025-10-31', 0, false, handler.projects[0].ID);
+    handler.createTodo('Test todo 2b', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 1, false, handler.projects[1].ID);
+    handler.createTodo('Test todo 1b', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 0, false, handler.projects[1].ID);
+    handler.createTodo('Test todo 3b', 'Description', [
+        {value: 'checklist item 1', isDone: false},
+        {value: 'checklist item 2', isDone: false},
+        {value: 'checklist item 3', isDone: false} 
+    ], '2025-10-31', 2, false, handler.projects[1].ID);
 
     return {
         generateProjects,

@@ -98,7 +98,8 @@ export function displayController() {
 
                 // container for hidden content
                 let todoExpandedContent = document.createElement('div');
-                todoExpandedContent.classList.add('hidden');
+                todoExpandedContent.classList.add('todo-expanded-content', 'hidden');
+                todoExpandedContent.id = todo.todoID;
 
                 // todo status (button)
                 let todoStatus = document.createElement('button');
@@ -492,9 +493,15 @@ export function displayController() {
 
     function toggleExpandedTodo(id) {
         console.log('expand clicked Todo: ' + id);
-        //get an array of objects w class .todo-expanded
-        //match to target id
-        //toggle class 'hidden'
+        let todoList = document.querySelectorAll('.todo-expanded-content');
+        todoList.forEach( (todo) => {
+            if (todo.id === id) {
+                if (todo.classList.contains('hidden')) {
+                    todo.classList.remove('hidden');
+                } else {
+                    todo.classList.add('hidden');
+                }
+            }})
     }
 
     function toggleExpandedProject(id) {

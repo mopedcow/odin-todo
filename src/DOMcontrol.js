@@ -294,8 +294,6 @@ export function displayController() {
         addTodoDialog.showModal();
     })
 
-    
-
     addDescBtn.addEventListener('click', () => {
         showDesc();
     })
@@ -491,6 +489,8 @@ export function displayController() {
         })
     }
 
+    /// Sorting and Expanding Projects and Todos
+    
     function toggleExpandedTodo(id) {
         console.log('expand clicked Todo: ' + id);
         let todoList = document.querySelectorAll('.todo-expanded-content');
@@ -516,12 +516,20 @@ export function displayController() {
             }})
     }
 
-    /// Sorting and Expanding Projects and Todos
-
     const viewProjectsBtn = document.getElementById('view-projects');
-    const expandProjectBtn = document.querySelectorAll('#expand-project');
-    const expandTodoBtn = document.querySelectorAll('#expand-todo');
-    function viewProjects(){}
+
+    viewProjectsBtn.addEventListener('click', () => {
+        viewProjects();
+    })
+
+    function viewProjects() {
+        let projects = document.querySelectorAll('.project-content');
+        projects.forEach( (project) => {
+            if (!project.classList.contains('hidden')) {
+                project.classList.add('hidden');
+            }
+        })
+    }
 
 
 

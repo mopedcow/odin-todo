@@ -8,6 +8,7 @@ export class Todo {
         this.isDone = isDone;
         this.todoID = crypto.randomUUID();
         this.projectID = projectID;
+        this.expanded = false;
     }
 
     changeAllProperties(newTitle, newDesc, newChecklist, newDueDate, newPriority, newProjectID) {
@@ -30,6 +31,12 @@ export class Todo {
         return (!this.checklist[itemNo].isDone) 
             ? this.checklist[itemNo].isDone = true 
             : this.checklist[itemNo].isDone = false ;
+    }
+
+    toggleExpanded() {
+        this.expanded = (this.expanded)
+            ? false
+            : true;
     }
 
     getPriorityByName() {

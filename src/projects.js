@@ -3,6 +3,7 @@ export class Project {
         this.title = title;
         this.priority = priority;
         this.ID = crypto.randomUUID();
+        this.expanded = false;
     }
 
     setTitle(newTitle) {
@@ -11,5 +12,11 @@ export class Project {
 
     setPriority(newPriority) {
         this.priority = newPriority;
+    }
+
+    toggleExpanded() {
+        this.expanded = (this.expanded)
+            ? false
+            : true;
     }
 }

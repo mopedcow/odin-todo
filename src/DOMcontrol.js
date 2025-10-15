@@ -81,9 +81,11 @@ export function displayController() {
             projectDiv.appendChild(projectTitle);
 
             projectDiv.classList.add('project-container');
-            projectContent.classList.add('project-content', 'hidden');
+            projectContent.classList.add('project-content');
             projectContent.id = project.ID;
-            // projectContent.classList.add('hidden');
+            if (!project.expanded) { 
+                projectContent.classList.add('hidden');
+            }
 
             let projectTodos = handler.filterTodosByProjectID(sortedTodos, project.ID);
 
@@ -98,8 +100,11 @@ export function displayController() {
 
                 // container for hidden content
                 let todoExpandedContent = document.createElement('div');
-                todoExpandedContent.classList.add('todo-expanded-content', 'hidden');
+                todoExpandedContent.classList.add('todo-expanded-content');
                 todoExpandedContent.id = todo.todoID;
+                if (!todo.expanded) { 
+                    todoExpandedContent.classList.add('hidden');
+                }
 
                 // todo status (button)
                 let todoStatus = document.createElement('button');
@@ -492,28 +497,15 @@ export function displayController() {
     /// Sorting and Expanding Projects and Todos
 
     function toggleExpandedTodo(id) {
-        console.log('expand clicked Todo: ' + id);
-        let todoList = document.querySelectorAll('.todo-expanded-content');
-        todoList.forEach( (todo) => {
-            if (todo.id === id) {
-                if (todo.classList.contains('hidden')) {
-                    todo.classList.remove('hidden');
-                } else {
-                    todo.classList.add('hidden');
-                }
-            }})
+        let todo = handler.todos[handler.getTodoIndexByID(id)];
+        todo.toggleExpanded();
+        resetProjects();
     }
 
     function toggleExpandedProject(id) {
-        let projects = document.querySelectorAll('.project-content');
-        projects.forEach( (project) => {
-            if (project.id === id) {
-                if (project.classList.contains('hidden')) {
-                    project.classList.remove('hidden');
-                } else {
-                    project.classList.add('hidden');
-                }   
-            }})
+        let project = handler.projects[handler.getProjectIndexByID(id)];
+        project.toggleExpanded();
+        resetProjects();
     }
 
     const viewProjectsBtn = document.getElementById('view-projects');

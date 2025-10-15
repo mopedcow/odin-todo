@@ -490,7 +490,7 @@ export function displayController() {
     }
 
     /// Sorting and Expanding Projects and Todos
-    
+
     function toggleExpandedTodo(id) {
         console.log('expand clicked Todo: ' + id);
         let todoList = document.querySelectorAll('.todo-expanded-content');

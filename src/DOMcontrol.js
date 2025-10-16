@@ -1,6 +1,7 @@
 import { is } from "date-fns/locale";
 import { format } from "date-fns"
 import { Handler } from "./logicHandler.js";
+import { validate } from "./formValidation.js";
 
 
 export function displayController() {
@@ -349,9 +350,13 @@ export function displayController() {
     })
 
     submitTodoBtn.addEventListener('click', () => {
-        addTodo();
-        resetProjects();
-        addTodoDialog.close();
+        if ((document.getElementById('todo-title').validity.valueMissing)) {
+            return;
+        } else {
+            addTodo();
+            resetProjects();
+            addTodoDialog.close();
+        }
     })
 
     SubmitEditsBtn.addEventListener('click', () => {
@@ -447,7 +452,6 @@ export function displayController() {
 
     function editTodo(todoIndex) {
         let inputs = getFormInfo();
-
         handler.todos[todoIndex].changeAllProperties(
             inputs.title, 
             inputs.desc, 
@@ -462,11 +466,14 @@ export function displayController() {
         addProjectDialog.showModal();
     })
 
-    submitProjectBtn.addEventListener('click', (e) => {
-        //e.preventDefault();
-        addProject();
-        resetProjects();
-        addProjectDialog.close();
+    submitProjectBtn.addEventListener('click', () => {
+        if ( (document.getElementById('project-title').validity.valueMissing) ) {
+            return;
+        } else {
+            addProject();
+            resetProjects();
+            addProjectDialog.close();
+        }
     })
 
     addProjectDialog.addEventListener('close', () => {

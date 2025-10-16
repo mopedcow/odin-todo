@@ -32,7 +32,7 @@
             <form id="add-todo-form">
                 <div id="add-title">
                     <label for="todo-title">Title:</label>
-                    <input type="text" name="title" id="todo-title">
+                    <input type="text" name="title" id="todo-title" required>
                 </div>
                 <div id="add-desc-button">
                     <button type="button" id="add-desc-button">Add Description...</button>
@@ -64,7 +64,7 @@
                     <input type="radio" name="todo-priority" id="priority-0" value="0">
                     
                     <label for="priority-1">Medium</label>
-                    <input type="radio" name="todo-priority" id="priority-1" value="1">
+                    <input type="radio" name="todo-priority" id="priority-1" value="1" checked>
                     
                     <label for="priority-2">Low</label>
                     <input type="radio" name="todo-priority" id="priority-2" value="2">
@@ -92,15 +92,15 @@
             <form id="add-project-form">
                 <div id="add-title">
                     <label for="project-title">Title:</label>
-                    <input type="text" name="title" id="project-title">
+                    <input type="text" name="title" id="project-title" required>
                 </div>
                 <div id="add-priority">
                     <p>Priority: </p>
                     <label for="project-priority-0">High</label>
-                    <input type="radio" name="project-priority" id="project-priority-0" value="0" checked>
+                    <input type="radio" name="project-priority" id="project-priority-0" value="0">
                     
                     <label for="project-priority-1">Medium</label>
-                    <input type="radio" name="project-priority" id="project-priority-1" value="1">
+                    <input type="radio" name="project-priority" id="project-priority-1" value="1" checked>
                     
                     <label for="project-priority-2">Low</label>
                     <input type="radio" name="project-priority" id="project-priority-2" value="2">

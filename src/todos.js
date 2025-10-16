@@ -21,7 +21,9 @@ export class Todo {
     }
 
     toggleIsDone() {
-        (!this.isDone) ? this.isDone = true : this.isDone = false;
+        this.isDone = (!this.isDone)
+            ? true
+            : false;
     }
 
     toggleChecklistItemStatus(itemNo) {

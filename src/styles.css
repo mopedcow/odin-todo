@@ -8,16 +8,111 @@ body, html {
 }
 body {
     background-color: aquamarine;
+    display: flex;
+    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+button,
+input,
+select {
+    font-family: inherit;
+    font-size: inherit;
+}
+#main-container {
+    width: 60%;
+}
+header {
+    height: 180px;
+    width: 100%;
+    margin-bottom: 26px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#heading {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+}
+#action-buttons {
+    display: grid;
+    grid-auto-flow: column;
+}
+#sorting-buttons {
+    display: grid;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .project-container {
-    border: 2px solid black;
-    padding: 6px;
+    border: 0px solid black;
+}
+.project-content {
+    margin: 6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.project-title {
+    width: 100%;
+    text-align: left;
+    padding: 8px 22px 8px;
+    font-size: 1.4em;
 }
 .todo-container {
     border: 1px solid grey;
-    margin: 4px;
+
+    display: grid;
+    grid-template-areas: 
+        'isDone title title expand'
+        '. content content content'
+        '. . edit delete';
 }
+.todo-title {
+    grid-area: title;
+}
+.toggle-status-btn {
+    grid-area: isDone;
+}
+.todo-del-btn {
+    grid-area: delete;
+}
+.todo-edit-btn {
+    grid-area: edit;
+}
+.todo-expand-btn {
+    grid-area: expand;
+}
+.todo-expanded-content {
+    grid-area: content;
+
+    display: grid;
+    grid-template-areas: 
+        'due priority'
+        'desc desc'
+        'checklist checklist';
+}
+.todo-priority {
+    grid-area: priority;
+}
+.todo-due-date {
+    grid-area: due;
+}
+.todo-desc {
+    grid-area: desc;
+}
+.todo-checklist {
+    grid-area: checklist;
+}
+
 .toggle-status-btn {
     background: cyan;
 }

@@ -1,7 +1,6 @@
 import { is } from "date-fns/locale";
 import { format } from "date-fns"
 import { Handler } from "./logicHandler.js";
-import { validate } from "./formValidation.js";
 
 
 export function displayController() {
@@ -109,7 +108,7 @@ export function displayController() {
 
                 // todo status (button)
                 let todoStatus = document.createElement('button');
-                todoStatus.textContent = `Complete?: ${todo.isDone}`;
+                todoStatus.textContent = `${todo.isDone}`;
                 todoStatus.classList.add('toggle-status-btn');
                 todoStatus.id = todo.todoID;
 
@@ -128,6 +127,7 @@ export function displayController() {
                 // todo description
                 let todoDesc = document.createElement('p');
                 todoDesc.textContent = `Description: ${todo.desc}`;
+                todoDesc.classList.add('todo-desc');
                 //  if no description, hide this element
                 if (todo.desc === '') {
                     todoDesc.classList.add('hidden');
@@ -135,6 +135,8 @@ export function displayController() {
   
                 // todo checklist
                 let todoChecklist = document.createElement('div');
+                todoChecklist.classList.add('todo-checklist');
+
                 todoChecklist.innerHTML = 
                     `<p>Checklist:</p>`;
                 let todoChecklistOL = document.createElement('ol');
@@ -153,6 +155,7 @@ export function displayController() {
 
                 // todo due date
                 let todoDueDate = document.createElement('span');
+                todoDueDate.classList.add('todo-due-date');
                 
                 // if no due date, hide this element
                 // if due date, get formatted date
@@ -173,14 +176,15 @@ export function displayController() {
                     //  change color of todo based on number [not added yet]
                     //  display high, medium, or low:
                 todoPriority.textContent = todo.getPriorityByName();
+                todoPriority.classList.add('todo-priority');
 
                 todoDiv.appendChild(todoTitle);
                 todoDiv.appendChild(todoStatus);
                 todoDiv.appendChild(delTodoBtn);
                 todoDiv.appendChild(SubmitEditsBtn);
-                todoDiv.appendChild(todoDueDate);
                 todoDiv.appendChild(todoExpandBtn);
 
+                todoExpandedContent.appendChild(todoDueDate);
                 todoExpandedContent.appendChild(todoPriority);
                 todoExpandedContent.appendChild(todoDesc);
                 todoExpandedContent.appendChild(todoChecklist);

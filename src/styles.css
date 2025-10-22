@@ -73,8 +73,7 @@ header {
     display: grid;
     grid-template-areas: 
         'isDone title title expand'
-        '. content content content'
-        '. . edit delete';
+        '. content content content';
 }
 .todo-title {
     grid-area: title;
@@ -82,11 +81,8 @@ header {
 .toggle-status-btn {
     grid-area: isDone;
 }
-.todo-del-btn {
-    grid-area: delete;
-}
-.todo-edit-btn {
-    grid-area: edit;
+.todo-btns-container {
+    grid-area: buttons;
 }
 .todo-expand-btn {
     grid-area: expand;
@@ -96,9 +92,10 @@ header {
 
     display: grid;
     grid-template-areas: 
-        'due priority'
-        'desc desc'
-        'checklist checklist';
+        'due due priority'
+        'desc desc desc'
+        'checklist checklist checklist'
+        '. . buttons';
 }
 .todo-priority {
     grid-area: priority;
@@ -112,10 +109,17 @@ header {
 .todo-checklist {
     grid-area: checklist;
 }
-
 .toggle-status-btn {
-    background: cyan;
+    width: 28px;
+    height: 28px;
 }
+.todo-false {
+    background-color: red;
+}
+.todo-true {
+    background-color: green;
+}
+
 .todo-del-btn {
     background: salmon;
 }

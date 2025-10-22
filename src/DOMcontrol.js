@@ -45,7 +45,7 @@ export function displayController() {
     const addTodoSubmit = document.getElementById('submit-todo');
     const editTodoHeading = document.getElementById('edit-todo-heading');
     const SubmitEditsDiv = document.getElementById('change-todo');
-    const SubmitEditsBtn = document.getElementById('change-todo-button');
+    const submitEditsBtn = document.getElementById('change-todo-button');
     // record index of 'todo' being edited currently
     let targetIndex;
 
@@ -98,6 +98,19 @@ export function displayController() {
                 todoTitle.classList.add('todo-title');
                 todoTitle.textContent = todo.title;
 
+                // todo status (button)
+                let todoStatus = document.createElement('button');
+                todoStatus.classList.add('toggle-status-btn');
+                let statusClass = (todo.isDone) ? 'todo-true' : 'todo-false';
+                todoStatus.classList.add(statusClass);
+                todoStatus.id = todo.todoID;
+
+                // button to expand hidden content
+                let todoExpandBtn = document.createElement('button');
+                todoExpandBtn.classList.add('todo-expand-btn');
+                todoExpandBtn.textContent = (!todo.expanded) ? '...' : ' ^^^ ';
+                todoExpandBtn.id = todo.todoID;
+
                 // container for hidden content
                 let todoExpandedContent = document.createElement('div');
                 todoExpandedContent.classList.add('todo-expanded-content');
@@ -105,24 +118,6 @@ export function displayController() {
                 if (!todo.expanded) { 
                     todoExpandedContent.classList.add('hidden');
                 }
-
-                // todo status (button)
-                let todoStatus = document.createElement('button');
-                todoStatus.textContent = `${todo.isDone}`;
-                todoStatus.classList.add('toggle-status-btn');
-                todoStatus.id = todo.todoID;
-
-                // delete todo button:
-                let delTodoBtn = document.createElement('button');
-                delTodoBtn.textContent = 'delete';
-                delTodoBtn.classList.add('todo-del-btn');
-                delTodoBtn.id = todo.todoID;
-
-                // edit todo button:
-                let SubmitEditsBtn = document.createElement('button');
-                SubmitEditsBtn.textContent = 'edit';
-                SubmitEditsBtn.classList.add('todo-edit-btn');
-                SubmitEditsBtn.id = todo.todoID;
 
                 // todo description
                 let todoDesc = document.createElement('p');
@@ -146,12 +141,11 @@ export function displayController() {
                     li.textContent = item.value;
                     todoChecklistOL.appendChild(li);
                 })
-                todoChecklist.appendChild(todoChecklistOL);
-
-                // if no checklist, hide this element
+                    // if no checklist, hide this element
                 if (todo.checklist.length === 0) {
                     todoChecklist.classList.add('hidden');
                 }
+                todoChecklist.appendChild(todoChecklistOL);
 
                 // todo due date
                 let todoDueDate = document.createElement('span');
@@ -165,11 +159,6 @@ export function displayController() {
                     let formDate = format(todo.dueDate, 'd MMM yyyy');
                     todoDueDate.textContent = `Due: ${formDate}`;
                 }
-
-                let todoExpandBtn = document.createElement('button');
-                todoExpandBtn.classList.add('todo-expand-btn');
-                todoExpandBtn.textContent = 'Expand...';
-                todoExpandBtn.id = todo.todoID;
                 
                 // todo priority
                 let todoPriority = document.createElement('div');
@@ -178,12 +167,31 @@ export function displayController() {
                 todoPriority.textContent = todo.getPriorityByName();
                 todoPriority.classList.add('todo-priority');
 
+                // div container for edit/del buttons
+                let buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('todo-btns-container');
+
+                // delete todo button:
+                let delTodoBtn = document.createElement('button');
+                delTodoBtn.textContent = 'delete';
+                delTodoBtn.classList.add('todo-del-btn');
+                delTodoBtn.id = todo.todoID;
+
+                // edit todo button:
+                let submitEditsBtn = document.createElement('button');
+                submitEditsBtn.textContent = 'edit';
+                submitEditsBtn.classList.add('todo-edit-btn');
+                submitEditsBtn.id = todo.todoID;
+
+                // add edit/del to buttonsContainer
+                buttonsContainer.appendChild(submitEditsBtn);
+                buttonsContainer.appendChild(delTodoBtn);
+
                 todoDiv.appendChild(todoTitle);
                 todoDiv.appendChild(todoStatus);
-                todoDiv.appendChild(delTodoBtn);
-                todoDiv.appendChild(SubmitEditsBtn);
                 todoDiv.appendChild(todoExpandBtn);
 
+                todoExpandedContent.appendChild(buttonsContainer);
                 todoExpandedContent.appendChild(todoDueDate);
                 todoExpandedContent.appendChild(todoPriority);
                 todoExpandedContent.appendChild(todoDesc);
@@ -363,7 +371,7 @@ export function displayController() {
         }
     })
 
-    SubmitEditsBtn.addEventListener('click', () => {
+    submitEditsBtn.addEventListener('click', () => {
         editTodo(targetIndex);
         resetProjects();
         addTodoDialog.close();

@@ -108,7 +108,9 @@ export function displayController() {
                 // button to expand hidden content
                 let todoExpandBtn = document.createElement('button');
                 todoExpandBtn.classList.add('todo-expand-btn');
-                todoExpandBtn.textContent = (!todo.expanded) ? '...' : ' ^^^ ';
+                todoExpandBtn.classList.add(
+                    todo.expanded ? 'open' : 'closed'
+                );
                 todoExpandBtn.id = todo.todoID;
 
                 // container for hidden content
@@ -173,13 +175,11 @@ export function displayController() {
 
                 // delete todo button:
                 let delTodoBtn = document.createElement('button');
-                delTodoBtn.textContent = 'delete';
                 delTodoBtn.classList.add('todo-del-btn');
                 delTodoBtn.id = todo.todoID;
 
                 // edit todo button:
                 let submitEditsBtn = document.createElement('button');
-                submitEditsBtn.textContent = 'edit';
                 submitEditsBtn.classList.add('todo-edit-btn');
                 submitEditsBtn.id = todo.todoID;
 

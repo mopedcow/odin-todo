@@ -1,5 +1,11 @@
 :root {
     --corners: 15px;
+    --walter: 'walter', 'Courier New', Courier, monospace;
+}
+
+@font-face {
+    font-family: 'walter';
+    src: url('fonts/WalterTurncoat-Regular.ttf');
 }
 * {
     margin: 0;
@@ -33,6 +39,8 @@ header {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-items: center;
+    row-gap: 12px;
 }
 
 #heading {
@@ -40,6 +48,11 @@ header {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
+}
+
+#heading h1 {
+    font-family: walter;
+    font-size: 3.2em;
 }
 #action-buttons {
     display: grid;
@@ -69,7 +82,9 @@ header {
     width: 100%;
     text-align: left;
     padding: 8px 22px 8px;
-    font-size: 1.4em;
+
+    font-family: var(--walter);
+    font-size: 1.8em;
 }
 .todo-container {
     border: 1px solid grey;
@@ -81,15 +96,21 @@ header {
 }
 .todo-title {
     grid-area: title;
-}
-.toggle-status-btn {
-    grid-area: isDone;
+
+    font-family: walter;
+    text-decoration: underline;
 }
 .todo-btns-container {
     grid-area: buttons;
 }
 .todo-expand-btn {
     grid-area: expand;
+}
+.todo-expand-btn.open {
+    background-image: url('icons/chevron-up.svg');
+}
+.todo-expand-btn.closed{
+    background-image: url('icons/chevron-down.svg');
 }
 .todo-expanded-content {
     grid-area: content;
@@ -114,21 +135,36 @@ header {
     grid-area: checklist;
 }
 .toggle-status-btn {
-    width: 28px;
-    height: 28px;
+    grid-area: isDone;
 }
 .todo-false {
-    background-color: red;
+    background-image: url('icons/checkbox-blank-outline.svg');
 }
 .todo-true {
-    background-color: green;
+    background-image: url('icons/checkbox-marked-outline.svg');
 }
 
 .todo-del-btn {
-    background: salmon;
+    background-image: url('icons/trash-can-outline.svg');
 }
 .todo-edit-btn {
-    background: mediumslateblue;
+    background-image: url('icons/pencil-outline.svg');
+}
+.todo-expand-btn,
+.toggle-status-btn,
+.todo-edit-btn,
+.todo-del-btn {
+    width: 32px;
+    height: 32px;
+    background-size: 100%;
+    background-position: center;
+    border: 0;
+}
+.toggle-status-btn:active,
+.todo-expand-btn:active,
+.todo-edit-btn:active,
+.todo-del-btn:active {
+    transform: translateY(2px) translateX(2px);
 }
 .hidden {
     display: none;

@@ -317,14 +317,18 @@ export function displayController() {
     })
     function showDesc() {
         addDescBtn.classList.add('hidden');
+        addDescBtn.classList.remove('shown');
         addDesc.classList.remove('hidden');
+        addDesc.classList.add('shown');
     }
     addDueDateBtn.addEventListener('click', () => {
         showDueDate();
     })
     function showDueDate() {
         addDueDateBtn.classList.add('hidden');
+        addDueDateBtn.classList.remove('shown');
         addDueDate.classList.remove('hidden');
+        addDueDate.classList.add('shown');
     }
 
     addChecklistBtn.addEventListener('click', () => {
@@ -334,7 +338,9 @@ export function displayController() {
 
     function showChecklist() {
         addChecklistBtn.classList.add('hidden');
+        addChecklistBtn.classList.remove('shown');
         addChecklist.classList.remove('hidden');
+        addChecklist.classList.add('shown');
     }
 
     function generateChecklist(num) {
@@ -381,16 +387,22 @@ export function displayController() {
         addTodoForm.reset();
         if (addDueDateBtn.classList.contains('hidden')) {
             addDueDateBtn.classList.remove('hidden');
+            addDueDateBtn.classList.add('shown');
             addDueDate.classList.add('hidden');
+            addDueDate.classList.remove('shown');
         }
         if (addDescBtn.classList.contains('hidden')) {
             addDescBtn.classList.remove('hidden');
+            addDescBtn.classList.add('shown');
             addDesc.classList.add('hidden');
+            addDesc.classList.remove('shown');
         }
         //  hide/show checklist
         if (addChecklistBtn.classList.contains('hidden')) {
             addChecklistBtn.classList.remove('hidden');
+            addChecklistBtn.classList.add('shown');
             addChecklist.classList.add('hidden');
+            addChecklist.classList.remove('shown');
         }
         // remove ALL input boxes(li elements):
         let listContainer = addTodoListInputs;

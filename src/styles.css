@@ -1,6 +1,11 @@
 :root {
-    --corners: 15px;
+    --corners: 5px;
     --walter: 'walter', 'Courier New', Courier, monospace;
+    --phigh: tomato;
+    --pmed: fuchsia;
+    --plow: mediumseagreen;
+    --shadow: drop-shadow(-2px 2px 2px black);
+    --submit: palegreen;
 }
 
 @font-face {
@@ -16,7 +21,7 @@ body, html {
     width: 100%;
 }
 body {
-    background-color: aquamarine;
+    background-color: white;
     display: flex;
     justify-content: center;
     font-family: 'Courier New', Courier, monospace;
@@ -27,6 +32,21 @@ select,
 textarea {
     font-family: inherit;
     font-size: inherit;
+}
+button {
+    background-color: transparent;
+    border: 1px solid black;
+
+}
+
+header button,
+button[type=submit] {
+    padding: 8px 22px;
+    border-radius: var(--corners);
+}
+
+button.project-title {
+    border: 2px solid black;
 }
 #main-container {
     width: 60%;
@@ -43,6 +63,7 @@ header {
     row-gap: 12px;
 }
 
+
 #heading {
     display: flex;
     flex-direction: column;
@@ -57,6 +78,7 @@ header {
 #action-buttons {
     display: grid;
     grid-auto-flow: column;
+    column-gap: 12px;
 }
 #sorting-buttons {
     display: grid;
@@ -69,8 +91,9 @@ header {
 }
 
 .project-container {
-    border: 0px solid black;
+    border: 0;
 }
+
 .project-content {
     margin: 6px;
 
@@ -85,23 +108,37 @@ header {
 
     font-family: var(--walter);
     font-size: 1.8em;
+
+    border: 2px solid black;
+    border-radius: var(--corners);
 }
 .todo-container {
     border: 1px solid grey;
+    border-radius: var(--corners);
+    padding: 6px;
 
     display: grid;
+    row-gap: 12px;
+    grid-template-columns: 32px 1fr 32px;
     grid-template-areas: 
         'isDone title title expand'
-        '. content content content';
+        '. content content .';
 }
+
 .todo-title {
     grid-area: title;
 
+    font-size: 1.2rem;
     font-family: walter;
-    text-decoration: underline;
+
+    border: 0;
+    text-align: left;
+    padding-left: 22px;
 }
 .todo-btns-container {
     grid-area: buttons;
+    position: relative;
+    left: 46px;
 }
 .todo-expand-btn {
     grid-area: expand;
@@ -113,26 +150,53 @@ header {
     background-image: url('icons/chevron-down.svg');
 }
 .todo-expanded-content {
+    border-top: 2px dotted black;
+    padding-top: 8px;
+
     grid-area: content;
 
     display: grid;
+    row-gap: 12px;
+    grid-template-columns: 1fr 1fr 64px;;
     grid-template-areas: 
-        'due due priority'
+        'due priority .'
         'desc desc desc'
         'checklist checklist checklist'
         '. . buttons';
 }
 .todo-priority {
     grid-area: priority;
+
+    font-style: italic;
+}
+.todo-priority.p-high span.p-tag {
+    text-decoration: underline;
+    font-weight: bold;
+    color: var(--phigh);
+}
+.todo-priority.p-med span.p-tag {
+    text-decoration: underline;
+    color: var(--pmed);
+}
+.todo-priority.p-low span.p-tag {
+    color: var(--plow);
 }
 .todo-due-date {
     grid-area: due;
+}
+.todo-due-date span,
+.todo-desc span,
+.todo-checklist p {
+    font-weight: bold;
 }
 .todo-desc {
     grid-area: desc;
 }
 .todo-checklist {
     grid-area: checklist;
+}
+.todo-checklist ol {
+    list-style-position: inside;
 }
 .toggle-status-btn {
     grid-area: isDone;
@@ -151,11 +215,20 @@ header {
     background-image: url('icons/pencil-outline.svg');
 }
 .todo-expand-btn,
+.toggle-status-btn {
+    width: 32px;
+    height: 32px;
+}
+.todo-edit-btn,
+.todo-del-btn {
+    width: 22px;
+    height: 22px;
+}
+.todo-expand-btn,
 .toggle-status-btn,
 .todo-edit-btn,
 .todo-del-btn {
-    width: 32px;
-    height: 32px;
+
     background-size: 100%;
     background-position: center;
     border: 0;
@@ -163,7 +236,9 @@ header {
 .toggle-status-btn:active,
 .todo-expand-btn:active,
 .todo-edit-btn:active,
-.todo-del-btn:active {
+.todo-del-btn:active,
+button[type=submit]:active,
+header button:active {
     transform: translateY(2px) translateX(2px);
 }
 .hidden {
@@ -173,7 +248,7 @@ header {
 /*    dialogs   */
 
 dialog {
-    filter: drop-shadow(-2px 2px 2px black);
+    filter: var(--shadow);
 
     width: 60%;
     margin: auto;
@@ -205,7 +280,6 @@ dialog {
 #submit-todo button,
 #submit-project button,
 #change-todo button{
-
     width: 100%;
 }
 

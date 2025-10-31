@@ -87,6 +87,18 @@ export function displayController() {
                 projectContent.classList.add('hidden');
             }
 
+            switch (project.priority) {
+                case 0:
+                    projectDiv.classList.add('p-high');
+                    break;
+                case 1:
+                    projectDiv.classList.add('p-med');
+                    break;
+                case 2:
+                    projectDiv.classList.add('p-low');
+                    break;
+            }
+
             let projectTodos = handler.filterTodosByProjectID(sortedTodos, project.ID);
 
             projectTodos.forEach( (todo) => {
@@ -94,9 +106,10 @@ export function displayController() {
                 todoDiv.classList.add('todo-container');
 
                 // todo title
-                let todoTitle = document.createElement('h2');
+                let todoTitle = document.createElement('button');
                 todoTitle.classList.add('todo-title');
                 todoTitle.textContent = todo.title;
+                todoTitle.id = todo.todoID;
 
                 // todo status (button)
                 let todoStatus = document.createElement('button');
@@ -123,7 +136,7 @@ export function displayController() {
 
                 // todo description
                 let todoDesc = document.createElement('p');
-                todoDesc.textContent = `Description: ${todo.desc}`;
+                todoDesc.innerHTML = `<span>Description</span>: ${todo.desc}`;
                 todoDesc.classList.add('todo-desc');
                 //  if no description, hide this element
                 if (todo.desc === '') {
@@ -159,14 +172,33 @@ export function displayController() {
                     todoDueDate.classList.add('hidden');
                 } else {
                     let formDate = format(todo.dueDate, 'd MMM yyyy');
-                    todoDueDate.textContent = `Due: ${formDate}`;
+                    todoDueDate.innerHTML = `<span>Due:</span> ${formDate}`;
                 }
                 
                 // todo priority
                 let todoPriority = document.createElement('div');
-                    //  change color of todo based on number [not added yet]
+                    
+                if (!todo.isDone) {
                     //  display high, medium, or low:
-                todoPriority.textContent = todo.getPriorityByName();
+                    todoPriority.innerHTML = `<span>Priority:</span> <span class="p-tag">${todo.getPriorityByName()}</span>`;
+                    //  change color of todo based on priority level
+                    switch (todo.priority) {
+                        case 0:
+                           todoPriority.classList.add('p-high');
+                           todoDiv.classList.add('p-high');
+                           break;
+                        case 1:
+                            todoPriority.classList.add('p-med');
+                            todoDiv.classList.add('p-med');
+                            break;
+                        case 2:
+                            todoPriority.classList.add('p-low');
+                            todoDiv.classList.add('p-low');
+                            break;
+                    }
+                } else {
+                    todoPriority.innerHTML = '<span class="p-done">Complete</span>'
+                }
                 todoPriority.classList.add('todo-priority');
 
                 // div container for edit/del buttons
@@ -210,9 +242,15 @@ export function displayController() {
         let editBtns = document.querySelectorAll('.todo-edit-btn');
         let toggleStatusBtns = document.querySelectorAll('.toggle-status-btn');
         let expandTodoBtn = document.querySelectorAll('.todo-expand-btn');
+        let expandTodoTitleBtn = document.querySelectorAll('.todo-title');
         let expandProjectBtn = document.querySelectorAll('.project-title');
 
         expandTodoBtn.forEach( (btn) => {
+            btn.addEventListener('click', (e) => {
+                toggleExpandedTodo(e.target.id);
+            })
+        })
+        expandTodoTitleBtn.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
                 toggleExpandedTodo(e.target.id);
             })
@@ -562,7 +600,7 @@ export function displayController() {
     handler.createProject('Test Project 2', 1);
     handler.createProject('Test Project 1', 0);
 
-    handler.createTodo('Test todo 1a', 'Description', [
+    handler.createTodo('Test todo 1a', 'Description dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscr ption dexscri sdgdfsg. sgdfgs ga ergargadfgadg. asdg afg a g gaf ption dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexsc ription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription', [
         {value: 'checklist item 1', isDone: false},
         {value: 'checklist item 2', isDone: false},
         {value: 'checklist item 3', isDone: false} 

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        input, button {
+            padding: 12px;
+        }
+        fieldset {
+            border: 3px dotted grey;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+        legend {
+            font-family:'Courier New', Courier, monospace;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <h1>localStorage test!!!</h1>
+    <fieldset>
+        <legend>Insert Person</legend>
+        <input id="inpName" type="text" placeholder="Enter Name">
+        <input id="inpAge" type="text" placeholder="Enter Age">
+        <input id="inpGender" type="text" placeholder="Enter Gender">
+        <button type="submit" id="btnInsert">Insert Data</button>
+    </fieldset>
+    <fieldset>
+        <legend>People</legend>
+        <div id="lsOutput"></div>
+    </fieldset>
+
+    <script>
+        class Person {
+            constructor(name, age, gender) {
+                this.name = name;
+                this.age = age;
+                this.gender = gender;
+                this.ID = crypto.randomUUID();
+                this.isAlive = true;
+            }
+            kill() {
+                this.isAlive = false;
+            }
+        }
+        //is there anything in localStoarge?
+        //  if so, populate 'people' with that
+        //  otherwise, it's an empty array.
+        let people = [];
+
+        if (localStorage.length > 0) {
+            let restoredPeople = JSON.parse(localStorage.getItem('people'));
+            people = restoredPeople;
+        } else {
+            let tempPerson = new Person('Sally', '5', 'Little Girl');
+            people.push(tempPerson);
+        }
+
+        const inpName = document.getElementById("inpName");
+        const inpAge = document.getElementById("inpAge");
+        const inpGender = document.getElementById("inpGender");
+
+        const btnInsert = document.getElementById("btnInsert");
+        const lsOutput = document.getElementById("lsOutput");
+
+        function clearOutput() {
+            lsOutput.innerHTML = '';
+            console.log('clear?');
+        }
+
+        function updatePeopleList() {
+            clearOutput();
+            people.forEach( (person) => {
+                lsOutput.innerHTML += `<p>${person.name}, ${person.age}, ${person.gender}</p>`;
+            })
+        }
+
+        function updateLocalStorage() {
+            console.log('update LS reached');
+            localStorage.setItem('people', JSON.stringify(people));
+        }
+
+        btnInsert.addEventListener('click', () => {
+            const name = inpName.value;
+            const age = inpAge.value;
+            const gender = inpGender.value;
+            console.log('clicked');
+
+            if (name && age && gender) {
+                const person = new Person(name, age, gender);
+                people.push(person);
+
+                //update localStorage
+                clearOutput();
+                updateLocalStorage();
+                updatePeopleList();
+            }
+        });
+
+        updatePeopleList();
+
+
+    </script>
+</body>
+</html>

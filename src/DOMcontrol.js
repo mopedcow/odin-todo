@@ -595,7 +595,7 @@ export function displayController() {
 
 
         //testing:
-
+    /*
     
     handler.createProject('Test Project 2', 1);
     handler.createProject('Test Project 1', 0);
@@ -632,7 +632,10 @@ export function displayController() {
         {value: 'checklist item 2', isDone: false},
         {value: 'checklist item 3', isDone: false} 
     ], '2025-10-31', 2, false, handler.projects[1].ID);
+    */
 
+
+    
     return {
         generateProjects,
     }

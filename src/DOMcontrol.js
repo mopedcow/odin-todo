@@ -69,6 +69,11 @@ export function displayController() {
         let sortedProjects = handler.sortArrayByPriority(handler.projects);
         let sortedTodos = handler.sortArrayByPriority(handler.todos);
 
+        console.log('sortedTodos:');
+        console.log(sortedTodos);
+        console.log('sorted projs:');
+        console.log(sortedProjects);
+
         sortedProjects.forEach( (project) => {
             let projectDiv = document.createElement('div');
             let projectTitle = document.createElement('button');
@@ -264,7 +269,8 @@ export function displayController() {
 
         deleteBtns.forEach( (btn) => {
             btn.addEventListener('click', (e) => {
-                deleteTodo(e.target.id); 
+                handler.deleteTodo(e.target.id);
+                resetProjects(); 
             })
         })
 
@@ -333,10 +339,6 @@ export function displayController() {
             })
         })
     }
-
-
-
-
 
     addTodoBtn.addEventListener('click', () => {
         //hide 'edit' options in dialog; show 'add new' ones
@@ -420,6 +422,11 @@ export function displayController() {
         resetProjects();
         addTodoDialog.close();
     })
+
+    function editTodo(todoIndex) {
+        let inputs = getFormInfo();
+        handler.updateTodo(todoIndex, inputs);
+    }
 
     addTodoDialog.addEventListener('close', () => {
         addTodoForm.reset();
@@ -508,18 +515,7 @@ export function displayController() {
             inputs.dueDate, 
             inputs.priority, 
             inputs.isDone, 
-            inputs.projectID
-        );
-    }
-
-    function editTodo(todoIndex) {
-        let inputs = getFormInfo();
-        handler.todos[todoIndex].changeAllProperties(
-            inputs.title, 
-            inputs.desc, 
-            inputs.checklist, 
-            inputs.dueDate, 
-            inputs.priority, 
+            crypto.randomUUID(),
             inputs.projectID
         );
     }
@@ -545,13 +541,7 @@ export function displayController() {
     function addProject() {
         const title = document.getElementById('project-title').value;
         const priority = document.querySelector('input[name="project-priority"]:checked').value;
-        handler.createProject(title, priority);
-    }
-
-    function deleteTodo(targetID) {
-        let todoIndex = handler.getTodoIndexByID(targetID);
-        handler.todos.splice(todoIndex, 1);
-        resetProjects();
+        handler.createProject(title, priority, crypto.randomUUID());
     }
 
     function toggleStatus(targetID) {
@@ -592,50 +582,6 @@ export function displayController() {
         })
     }
 
-
-
-        //testing:
-    /*
-    
-    handler.createProject('Test Project 2', 1);
-    handler.createProject('Test Project 1', 0);
-
-    handler.createTodo('Test todo 1a', 'Description dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscr ption dexscri sdgdfsg. sgdfgs ga ergargadfgadg. asdg afg a g gaf ption dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexsc ription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription dexscription', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 0, false, handler.projects[0].ID);
-    handler.createTodo('Test todo 2a', 'Description', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 1, false, handler.projects[0].ID);
-    handler.createTodo('Test todo 3a', 'Description', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 2, false, handler.projects[0].ID);
-
-
-    handler.createTodo('Test todo 2b', 'Description', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 1, false, handler.projects[1].ID);
-    handler.createTodo('Test todo 1b', 'Description', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 0, false, handler.projects[1].ID);
-    handler.createTodo('Test todo 3b', 'Description', [
-        {value: 'checklist item 1', isDone: false},
-        {value: 'checklist item 2', isDone: false},
-        {value: 'checklist item 3', isDone: false} 
-    ], '2025-10-31', 2, false, handler.projects[1].ID);
-    */
-
-
-    
     return {
         generateProjects,
     }

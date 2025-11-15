@@ -1,8 +1,8 @@
 export class Project {
-    constructor(title, priority) {
+    constructor(title, priority, ID) {
         this.title = title;
         this.priority = priority;
-        this.ID = crypto.randomUUID();
+        this.ID = ID;
         this.expanded = false;
     }
 
